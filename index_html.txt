@@ -1,0 +1,2692 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>아카데미 오브 지니어스: 영재 마스터</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-outer: #030712;
+            --bg-app: #090d16;
+            --bg-app-grad: radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.16) 0%, rgba(9, 13, 22, 1) 55%);
+            --bg-header: rgba(11, 16, 29, 0.86);
+            --bg-card: linear-gradient(145deg, rgba(22, 30, 49, 0.82) 0%, rgba(13, 19, 34, 0.92) 100%);
+            --bg-sub: rgba(15, 23, 42, 0.72);
+            --border-main: rgba(148, 163, 184, 0.14);
+            --border-highlight: rgba(255, 255, 255, 0.08);
+            --border-subtle: rgba(51, 65, 85, 0.55);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --choice-bg: linear-gradient(180deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.96) 100%);
+            --choice-border: rgba(99, 102, 241, 0.25);
+            --choice-shadow: rgba(2, 6, 23, 0.85);
+            --sp-bg: rgba(7, 11, 22, 0.94);
+            --sp-dot: rgba(148, 163, 184, 0.2);
+        }
+
+        body.theme-light {
+            --bg-outer: #dbe4f0;
+            --bg-app: #f8fafc;
+            --bg-app-grad: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.09) 0%, rgba(248, 250, 252, 1) 55%);
+            --bg-header: rgba(255, 255, 255, 0.9);
+            --bg-card: linear-gradient(145deg, rgba(255, 255, 255, 0.96) 0%, rgba(241, 245, 249, 0.94) 100%);
+            --bg-sub: rgba(241, 245, 249, 0.9);
+            --border-main: rgba(15, 23, 42, 0.08);
+            --border-highlight: rgba(255, 255, 255, 0.9);
+            --border-subtle: rgba(203, 213, 225, 0.8);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --choice-bg: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+            --choice-border: rgba(203, 213, 225, 0.95);
+            --choice-shadow: rgba(148, 163, 184, 0.45);
+            --sp-bg: rgba(255, 255, 255, 0.96);
+            --sp-dot: rgba(100, 116, 139, 0.22);
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            background-color: var(--bg-outer);
+            color: var(--text-main);
+            letter-spacing: -0.015em;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            overflow: hidden;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+        .font-game { font-family: 'Jua', 'Pretendard', sans-serif; letter-spacing: 0.01em; }
+        ::-webkit-scrollbar { display: none; }
+
+        .app-shell {
+            background: var(--bg-app-grad), var(--bg-app);
+            border-color: var(--border-subtle);
+            transition: background 0.25s ease;
+        }
+        .header-shell {
+            background-color: var(--bg-header);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-color: var(--border-main);
+        }
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid var(--border-main);
+            box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.2), inset 0 1px 0 var(--border-highlight);
+        }
+        .sub-box {
+            background-color: var(--bg-sub);
+            border-color: var(--border-subtle);
+        }
+        .text-main { color: var(--text-main); }
+        .text-muted { color: var(--text-muted); }
+
+        .btn-3d {
+            transition: transform 0.12s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.15s ease, box-shadow 0.15s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+        }
+        .btn-3d:active:not(:disabled) {
+            transform: scale(0.97) translateY(1px);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+        }
+        .btn-3d:disabled {
+            opacity: 0.38;
+            filter: grayscale(0.75);
+            cursor: not-allowed;
+        }
+
+        .choice-btn {
+            background: var(--choice-bg);
+            border: 1px solid var(--choice-border);
+            box-shadow: 0 3px 8px var(--choice-shadow), inset 0 1px 0 var(--border-highlight);
+            color: var(--text-main);
+            transition: transform 0.12s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+        .choice-btn:hover:not(:disabled) {
+            border-color: rgba(99, 102, 241, 0.65);
+        }
+        .choice-btn:active:not(:disabled) {
+            transform: scale(0.985) translateY(1px);
+        }
+        .choice-btn.correct {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+            border-color: #34d399 !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4), inset 0 1px 0 rgba(255,255,255,0.3) !important;
+        }
+        .choice-btn.wrong {
+            background: linear-gradient(135deg, #e11d48 0%, #be123c 100%) !important;
+            border-color: #fb7185 !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 16px rgba(244, 63, 94, 0.4), inset 0 1px 0 rgba(255,255,255,0.25) !important;
+        }
+
+        @keyframes floatMonster {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-7px); }
+        }
+        .monster-idle { animation: floatMonster 2.5s ease-in-out infinite; }
+
+        @keyframes hitMonster {
+            0% { transform: translate(0, 0) scale(1); filter: brightness(1); }
+            25% { transform: translate(14px, -6px) scale(0.9) rotate(6deg); filter: brightness(2.6) saturate(3); }
+            55% { transform: translate(-8px, 4px) scale(0.95) rotate(-4deg); }
+            100% { transform: translate(0, 0) scale(1); filter: brightness(1); }
+        }
+        .monster-hit { animation: hitMonster 0.35s ease-out; }
+
+        @keyframes shakeBox {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-7px); }
+            40% { transform: translateX(7px); }
+            60% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+        }
+        .screen-shake { animation: shakeBox 0.3s ease-in-out; }
+
+        @keyframes floatDmg {
+            0% { opacity: 0; transform: translate(-50%, 10px) scale(0.6); }
+            20% { opacity: 1; transform: translate(-50%, -12px) scale(1.25); }
+            80% { opacity: 1; transform: translate(-50%, -40px) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -58px) scale(0.9); }
+        }
+        .dmg-popup {
+            position: absolute;
+            left: 50%;
+            top: 20%;
+            pointer-events: none;
+            z-index: 40;
+            animation: floatDmg 0.85s ease-out forwards;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.85);
+        }
+
+        .boss-aura {
+            filter: drop-shadow(0 0 12px rgba(251, 191, 36, 0.85)) drop-shadow(0 0 22px rgba(244, 63, 94, 0.65));
+        }
+
+        @keyframes coinBurst {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(0.6); }
+            60% { opacity: 1; transform: translate(var(--tx), var(--ty)) scale(1.15); }
+            100% { opacity: 0; transform: translate(var(--tx), calc(var(--ty) + 25px)) scale(0.8); }
+        }
+        .coin-particle {
+            position: absolute;
+            left: 50%;
+            top: 45%;
+            pointer-events: none;
+            z-index: 45;
+            animation: coinBurst 1.05s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes bannerPop {
+            0% { opacity: 0; transform: translate(-50%, 10px) scale(0.85); }
+            15% { opacity: 1; transform: translate(-50%, 0px) scale(1.05); }
+            85% { opacity: 1; transform: translate(-50%, 0px) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -8px) scale(0.95); }
+        }
+        .boss-loot-banner {
+            position: absolute;
+            left: 50%;
+            bottom: 6px;
+            z-index: 45;
+            pointer-events: none;
+            animation: bannerPop 2.2s ease-out forwards;
+        }
+
+        .fever-bg {
+            background: radial-gradient(circle at 50% 40%, rgba(245, 158, 11, 0.28) 0%, transparent 85%) !important;
+            box-shadow: inset 0 0 22px rgba(251, 191, 36, 0.45);
+        }
+
+        .scratchpad-board {
+            background-color: var(--sp-bg);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            background-image: radial-gradient(var(--sp-dot) 1.2px, transparent 1.2px);
+            background-size: 20px 20px;
+        }
+        #scratchpad-canvas {
+            touch-action: none;
+            cursor: crosshair;
+        }
+    </style>
+</head>
+<body class="h-[100dvh] w-screen flex justify-center items-center">
+
+    <!-- 모바일 앱 프레임 -->
+    <div id="app-frame" class="app-shell w-full max-w-[480px] h-[100dvh] sm:h-[95dvh] sm:max-h-[900px] sm:rounded-[34px] sm:border shadow-[0_24px_70px_rgba(0,0,0,0.75)] flex flex-col relative overflow-hidden">
+
+        <!-- =====================================================================
+             0. 간편 로그인 / 계정 생성 화면 (AUTH SCREEN)
+             ===================================================================== -->
+        <div id="screen-auth" class="hidden absolute inset-0 z-50 app-shell flex flex-col justify-between p-6 overflow-y-auto">
+            <div class="text-center pt-6">
+                <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-gradient-to-br from-indigo-500 via-violet-600 to-purple-700 p-[1px] shadow-lg shadow-indigo-500/25">
+                    <div class="w-full h-full rounded-2xl bg-slate-950/90 flex items-center justify-center text-3xl">🏛️</div>
+                </div>
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-400/30 text-indigo-400 text-[11px] font-bold tracking-wide mb-2">
+                    ACADEMY PASS · 이중 금고 보호
+                </div>
+                <h1 class="font-game text-2xl sm:text-3xl text-main tracking-tight">아카데미 오브 지니어스</h1>
+                <p class="text-xs text-muted mt-1.5 font-medium">중1 수학·과학 전 범위 & 영재학급 대비 실전 RPG</p>
+            </div>
+
+            <div class="my-auto py-4 space-y-4">
+                <!-- 로그인 / 회원가입 전환 탭 -->
+                <div class="grid grid-cols-2 gap-1.5 sub-box p-1.5 rounded-2xl border">
+                    <button onclick="switchAuthMode('login')" id="auth-tab-login" class="py-2.5 rounded-xl bg-indigo-600 text-white text-xs font-bold shadow-sm transition-all">
+                        🔑 기존 계정 로그인
+                    </button>
+                    <button onclick="switchAuthMode('register')" id="auth-tab-register" class="py-2.5 rounded-xl text-muted text-xs font-bold transition-all">
+                        ✨ 새 영재 계정 만들기
+                    </button>
+                </div>
+
+                <!-- [로그인 패널] -->
+                <div id="auth-panel-login" class="glass-card rounded-3xl p-5 space-y-4">
+                    <div>
+                        <label class="block text-[11px] font-bold text-muted mb-1.5">계정 닉네임</label>
+                        <input id="login-name-input" type="text" maxlength="12" placeholder="가입한 닉네임을 입력하세요"
+                            oninput="sanitizeNicknameInput(this)"
+                            class="w-full sub-box border rounded-xl px-3.5 py-3 text-sm font-semibold text-main placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all">
+                    </div>
+                    <div>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="text-[11px] font-bold text-muted">비밀번호 (영문+숫자 4~20자)</label>
+                            <button type="button" onclick="togglePwVisibility('login-pin-input', this)" class="text-[11px] text-indigo-400 hover:text-indigo-300 font-semibold">👁️ 보기</button>
+                        </div>
+                        <input id="login-pin-input" type="password" maxlength="20" placeholder="비밀번호를 입력하세요"
+                            onkeydown="if(event.key==='Enter') submitLogin()"
+                            class="w-full sub-box border rounded-xl px-3.5 py-3 text-sm font-semibold text-main placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all">
+                    </div>
+                    <button onclick="submitLogin()" class="btn-3d w-full bg-gradient-to-r from-indigo-600 via-indigo-500 to-blue-600 text-white font-bold text-sm py-3.5 rounded-2xl tracking-wide">
+                        아카데미 입장하기 →
+                    </button>
+                </div>
+
+                <!-- [새 계정 생성 패널] -->
+                <div id="auth-panel-register" class="hidden glass-card rounded-3xl p-5 space-y-4">
+                    <div>
+                        <label class="block text-[11px] font-bold text-muted mb-1.5">영재 닉네임 (2~12자 · 한글/영문/숫자/ _ / .)</label>
+                        <input id="reg-name-input" type="text" maxlength="12" placeholder="예: 미래_영재.1, newton.kr"
+                            oninput="sanitizeNicknameInput(this, true); onRegisterInputChange()"
+                            class="w-full sub-box border rounded-xl px-3.5 py-3 text-sm font-semibold text-main placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all">
+                        <div id="reg-name-status" class="mt-1.5 text-[11px] font-semibold text-muted">
+                            2~12자 한글, 영문, 숫자, 밑줄(_), 마침표(.)만 가능 (띄어쓰기 불가)
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="text-[11px] font-bold text-muted">비밀번호 설정 (영문+숫자 4~20자)</label>
+                            <button type="button" onclick="togglePwVisibility('reg-pin-input', this)" class="text-[11px] text-indigo-400 hover:text-indigo-300 font-semibold">👁️ 보기</button>
+                        </div>
+                        <input id="reg-pin-input" type="password" maxlength="20" placeholder="반복·쉬운 패턴 제외, 4종류 이상 문자 조합"
+                            oninput="onRegisterInputChange()"
+                            onkeydown="if(event.key==='Enter') submitRegister()"
+                            class="w-full sub-box border rounded-xl px-3.5 py-3 text-sm font-semibold text-main placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all">
+                        <div class="flex items-center justify-between mt-2 gap-2">
+                            <span class="text-[10px] font-bold text-muted shrink-0">보안 강도</span>
+                            <span id="pw-strength-label" class="text-[10px] font-extrabold text-muted text-right truncate">입력 대기</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-1.5 mt-1.5 text-[10px] font-semibold">
+                            <span id="pw-rule-len" class="sub-box border px-2 py-1 rounded-lg text-muted">○ 4~20자</span>
+                            <span id="pw-rule-mix" class="sub-box border px-2 py-1 rounded-lg text-muted">○ 영문+숫자</span>
+                            <span id="pw-rule-uniq" class="sub-box border px-2 py-1 rounded-lg text-muted">○ 4종류 이상 문자</span>
+                            <span id="pw-rule-easy" class="sub-box border px-2 py-1 rounded-lg text-muted">○ 반복/쉬운패턴 제외</span>
+                        </div>
+                    </div>
+                    <button onclick="submitRegister()" class="btn-3d w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-sm py-3.5 rounded-2xl tracking-wide">
+                        계정 생성 후 바로 시작 ✨
+                    </button>
+                </div>
+            </div>
+
+            <div class="text-center text-[11px] text-muted pb-2">
+                로그아웃해도 모든 학습 데이터는 개인 금고에 안전하게 보관됩니다.
+            </div>
+        </div>
+
+
+        <!-- =====================================================================
+             1. 로비 화면 (LOBBY SCREEN)
+             ===================================================================== -->
+        <div id="screen-lobby" class="hidden flex-1 flex flex-col h-full overflow-hidden">
+            
+            <!-- 상단 HUD: 계정 닉네임 + 영재 티어 + 재화 + 출석 + 설정 -->
+            <header class="header-shell px-4 py-3 border-b shrink-0 space-y-2.5">
+                <div class="flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <div class="relative shrink-0">
+                            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-500/25 to-purple-500/25 border border-indigo-400/30 flex items-center justify-center text-xl shadow-inner">
+                                <span id="ui-active-pet-badge" title="장착 파트너">🦉</span>
+                            </div>
+                        </div>
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-1.5">
+                                <span id="ui-user-name" class="text-sm font-extrabold text-main truncate max-w-[85px]">모험가</span>
+                                <span id="ui-tier-badge" class="px-2 py-0.5 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-700 font-bold text-[10px] text-white shadow-sm shrink-0">
+                                    🌱 초급자
+                                </span>
+                            </div>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full sub-box border text-[11px] font-bold text-amber-500">
+                                    🪙 <span id="ui-gold">0</span>
+                                </span>
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full sub-box border text-[11px] font-bold text-cyan-400">
+                                    💎 <span id="ui-gem">0</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-1.5 shrink-0">
+                        <button onclick="openCheckinModal()" class="relative btn-3d bg-gradient-to-r from-indigo-600 to-violet-600 text-white text-[11px] font-bold px-3 py-2 rounded-xl flex items-center gap-1">
+                            <span>📅 출석</span>
+                            <span id="checkin-dot" class="hidden w-2 h-2 rounded-full bg-rose-400 animate-ping"></span>
+                        </button>
+                        <button onclick="openSettingsModal()" class="w-9 h-9 rounded-xl sub-box border flex items-center justify-center text-sm hover:border-indigo-400/50 active:scale-95 transition-all" title="설정 및 계정">
+                            ⚙️
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 티어 경험치 & 영구 배율 바 -->
+                <div class="sub-box rounded-2xl px-3 py-2 border">
+                    <div class="flex items-center justify-between text-[10px] font-bold mb-1.5">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-md border border-rose-500/20">⚔️ 공격 <span id="ui-tier-atk">1.0x</span></span>
+                            <span class="text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-500/20">🪙 코인 <span id="ui-tier-gold">1.0x</span></span>
+                        </div>
+                        <span id="ui-tier-xp-text" class="text-muted font-semibold">0 / 300 XP</span>
+                    </div>
+                    <div class="w-full h-2 bg-slate-900/50 rounded-full overflow-hidden p-[1px]">
+                        <div id="ui-tier-bar" class="h-full rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-amber-400 transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 로비 메인 스크롤 영역 -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-3.5">
+                
+                <!-- [탭 1] 던전 출격 -->
+                <div id="tab-dungeon" class="space-y-3">
+                    <!-- 진행 중인 던전 이어하기 배너 -->
+                    <div id="resume-banner" class="hidden glass-card rounded-2xl p-4 border border-amber-400/60 bg-gradient-to-r from-amber-500/10 via-orange-500/5 to-indigo-600/10">
+                        <div class="flex items-center justify-between gap-2.5">
+                            <div class="min-w-0">
+                                <div class="inline-flex items-center gap-1 text-[10px] font-extrabold text-amber-400 uppercase tracking-wider">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span> 진행 중인 던전 저장됨
+                                </div>
+                                <div id="resume-title" class="text-sm font-extrabold text-main mt-0.5 truncate">Ch.1 중1-1 수학 (Stage 4/10)</div>
+                                <div id="resume-relics" class="text-[11px] text-muted mt-0.5">보유 유물: 1개 · HP 100/100</div>
+                            </div>
+                            <div class="flex flex-col gap-1.5 shrink-0">
+                                <button onclick="resumeSavedRun()" class="btn-3d bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 font-extrabold text-xs px-3.5 py-2 rounded-xl">
+                                    ▶ 이어서 도전
+                                </button>
+                                <button onclick="abandonSavedRun()" class="text-[10px] text-muted hover:text-rose-400 underline text-center">
+                                    기록 초기화
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between px-1 text-xs font-bold text-muted">
+                        <span>중1 전 범위 & 영재학급 커리큘럼</span>
+                        <span class="text-amber-400 text-[11px]">👑 보스 처치 시 3배 코인 + 💎</span>
+                    </div>
+
+                    <div id="chapter-list" class="space-y-3 pb-2"></div>
+                </div>
+
+                <!-- [탭 2] 스탯 연구소 & 젬 펫 뽑기 -->
+                <div id="tab-lab" class="hidden space-y-3 pb-2">
+                    <div class="glass-card rounded-2xl p-3.5 border border-indigo-500/30">
+                        <div class="font-game text-base text-indigo-400">🔬 아카데미 스탯 연구소</div>
+                        <p class="text-[11px] text-muted mt-0.5">영구 강화 수치는 영재 티어 배율과 곱연산으로 중첩됩니다!</p>
+                    </div>
+                    <div id="lab-list" class="space-y-2.5"></div>
+
+                    <!-- 파트너 펫 소환 & 장착 -->
+                    <div class="glass-card rounded-2xl p-3.5 border border-cyan-500/30 space-y-2.5">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="font-game text-base text-cyan-400">🐾 영재 파트너 펫</div>
+                                <p class="text-[11px] text-muted">젬으로 파트너를 소환해 전투 패시브를 받으세요!</p>
+                            </div>
+                            <button onclick="summonPet()" class="btn-3d bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-extrabold text-xs px-3 py-2 rounded-xl shrink-0">
+                                💎 15 소환
+                            </button>
+                        </div>
+                        <div id="pet-list" class="grid grid-cols-2 gap-2"></div>
+                    </div>
+                </div>
+
+                <!-- [탭 3] 오답 복수전 & 비밀 풀이노트 -->
+                <div id="tab-notes" class="hidden space-y-3 pb-2">
+                    <div class="grid grid-cols-2 gap-2 sub-box p-1 rounded-xl border">
+                        <button onclick="switchNoteSubTab('revenge')" id="subtab-btn-revenge" class="py-1.5 rounded-lg bg-rose-600 text-white text-xs font-extrabold">
+                            🔥 오답 복수전 (<span id="wrong-count-badge">0</span>)
+                        </button>
+                        <button onclick="switchNoteSubTab('gallery')" id="subtab-btn-gallery" class="py-1.5 rounded-lg text-muted text-xs font-extrabold">
+                            📸 비밀 풀이노트 (<span id="saved-note-count">0</span>)
+                        </button>
+                    </div>
+
+                    <div id="subtab-revenge" class="space-y-2.5">
+                        <div class="glass-card rounded-2xl p-3.5 border border-rose-500/30 flex items-center justify-between gap-2">
+                            <div>
+                                <div class="text-xs font-extrabold text-rose-500">현상수배 오답 복수전</div>
+                                <p class="text-[11px] text-muted">틀린 문제를 복수전에서 맞히면 <span class="text-amber-500 font-bold">2배 코인 + 1💎</span> 획득!</p>
+                            </div>
+                            <button id="btn-start-revenge" onclick="startBattle('REVENGE', true)" class="btn-3d bg-gradient-to-r from-rose-600 to-pink-600 text-white font-game text-xs px-3.5 py-2.5 rounded-xl shrink-0">
+                                복수 출격 ▶
+                            </button>
+                        </div>
+                        <div id="wrong-list" class="space-y-2"></div>
+                    </div>
+
+                    <div id="subtab-gallery" class="hidden space-y-2.5">
+                        <div class="glass-card rounded-2xl p-3 border border-amber-500/30 text-[11px] text-muted">
+                            💡 전투 중 <span class="text-amber-500 font-bold">[✏️ 연습장] → [📸 노트 저장]</span>으로 보관한 나만의 손글씨 풀이 모음입니다.
+                        </div>
+                        <div id="saved-notes-list" class="space-y-3"></div>
+                    </div>
+                </div>
+
+                <!-- [탭 4] 영재 역량 레이더 & 티어표 -->
+                <div id="tab-analysis" class="hidden space-y-3 pb-2">
+                    <div class="glass-card rounded-2xl p-4 border border-cyan-500/30 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="font-game text-base text-cyan-400">📊 4대 영재 역량 레이더</div>
+                            <span id="analysis-total-solved" class="text-[11px] font-bold text-muted">누적 0문제 풀이</span>
+                        </div>
+
+                        <!-- SVG 4대 영역 레이더 차트 -->
+                        <div class="flex justify-center py-1">
+                            <svg id="radar-svg" viewBox="0 0 240 200" class="w-60 h-48 overflow-visible"></svg>
+                        </div>
+
+                        <div id="radar-bars" class="space-y-2"></div>
+                        <div id="weak-area-box" class="sub-box border border-amber-500/30 rounded-xl p-3 text-xs text-main leading-relaxed">
+                            문제를 풀면 취약 영역을 자동으로 분석해 드립니다!
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-4 border space-y-2">
+                        <div class="font-game text-sm text-amber-500">👑 영재 티어 승급표 & 영구 배율</div>
+                        <div id="tier-table" class="space-y-1.5 text-xs"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 하단 4탭 네비게이션 -->
+            <nav class="header-shell border-t px-3 py-2.5 grid grid-cols-4 gap-2 shrink-0">
+                <button onclick="switchTab('dungeon')" id="nav-btn-dungeon" class="py-2.5 rounded-2xl bg-indigo-600/15 border border-indigo-500/40 text-indigo-400 font-bold text-[11px] transition-all">
+                    ⚔️ 던전
+                </button>
+                <button onclick="switchTab('lab')" id="nav-btn-lab" class="py-2.5 rounded-2xl sub-box border text-muted font-bold text-[11px] transition-all">
+                    🔬 연구소/펫
+                </button>
+                <button onclick="switchTab('notes')" id="nav-btn-notes" class="relative py-2.5 rounded-2xl sub-box border text-muted font-bold text-[11px] transition-all">
+                    📕 오답/노트
+                    <span id="nav-notes-dot" class="hidden absolute top-2 right-2.5 w-2 h-2 rounded-full bg-rose-500"></span>
+                </button>
+                <button onclick="switchTab('analysis')" id="nav-btn-analysis" class="py-2.5 rounded-2xl sub-box border text-muted font-bold text-[11px] transition-all">
+                    📊 영재분석
+                </button>
+            </nav>
+        </div>
+
+
+        <!-- =====================================================================
+             2. 배틀 화면 (BATTLE SCREEN)
+             ===================================================================== -->
+        <div id="screen-battle" class="hidden flex-1 flex flex-col h-full overflow-hidden">
+            
+            <!-- 배틀 상단 HUD -->
+            <header class="header-shell px-3.5 py-2.5 border-b flex items-center justify-between gap-2 shrink-0">
+                <button onclick="exitBattleAndSave()" class="sub-box hover:border-indigo-400/50 text-main text-[11px] font-bold px-3 py-1.5 rounded-xl border active:scale-95 transition-all">
+                    💾 저장 후 로비
+                </button>
+                <div class="text-center min-w-0">
+                    <div id="battle-title" class="text-[11px] font-bold text-indigo-400 truncate">Ch.1 중1-1 수학</div>
+                    <div class="text-xs font-black text-main tracking-wide">STAGE <span id="battle-stage">1</span> / <span id="battle-total">10</span></div>
+                </div>
+                <div class="flex items-center gap-1.5 shrink-0">
+                    <div class="sub-box border border-amber-500/30 px-2.5 py-1 rounded-xl text-right">
+                        <div class="text-[9px] font-bold text-muted leading-none">COMBO</div>
+                        <div id="battle-combo" class="font-game text-sm text-amber-400 leading-tight">0</div>
+                    </div>
+                    <button onclick="openSettingsModal()" class="w-8 h-8 rounded-xl sub-box border flex items-center justify-center text-sm active:scale-95">
+                        ⚙️
+                    </button>
+                </div>
+            </header>
+
+            <!-- 몬스터 아레나 -->
+            <section id="arena-box" class="relative px-4 py-2.5 border-b border-slate-700/25 flex flex-col items-center shrink-0">
+                <div id="fever-tag" class="hidden absolute top-1.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-extrabold text-[10px] px-3 py-0.5 rounded-full shadow-md z-20 animate-bounce">
+                    🔥 FEVER! 데미지 & 골드 2배
+                </div>
+
+                <!-- 보유 로그라이크 유물 미니 아이콘 바 -->
+                <div id="active-relics-bar" class="w-full flex items-center justify-center gap-1 min-h-[18px] mb-1 flex-wrap"></div>
+
+                <!-- 몬스터 이름 & HP -->
+                <div class="w-full max-w-[320px]">
+                    <div class="flex justify-between items-center text-xs font-bold mb-1">
+                        <div class="flex items-center gap-1.5 min-w-0">
+                            <span id="boss-crown-badge" class="hidden bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 font-black text-[10px] px-1.5 py-0.5 rounded shrink-0">👑 BOSS</span>
+                            <span id="enemy-name" class="text-main truncate">지식 몬스터</span>
+                        </div>
+                        <span class="text-rose-400 font-extrabold shrink-0"><span id="enemy-hp">100</span> / <span id="enemy-max-hp">100</span></span>
+                    </div>
+                    <div class="w-full h-2 bg-slate-900/50 rounded-full overflow-hidden p-[1px] border border-slate-700/30">
+                        <div id="enemy-hp-bar" class="h-full rounded-full bg-gradient-to-r from-rose-500 to-orange-400 transition-all duration-300" style="width: 100%"></div>
+                    </div>
+                </div>
+
+                <!-- SVG 몬스터 + 파트너 펫 -->
+                <div id="monster-stage" class="relative w-36 h-20 my-1 flex items-center justify-center">
+                    <div id="battle-pet-float" class="absolute left-0 bottom-1 text-2xl monster-idle drop-shadow" title="장착 파트너 펫">🦉</div>
+                    <div id="monster-svg" class="w-20 h-20 monster-idle drop-shadow-lg"></div>
+                </div>
+
+                <!-- 플레이어 HP & MP 바 -->
+                <div class="w-full grid grid-cols-2 gap-3 pt-1.5 border-t border-slate-700/25">
+                    <div>
+                        <div class="flex justify-between text-[10px] font-bold mb-1">
+                            <span class="text-emerald-400">❤️ HP <span id="buff-shield-tag" class="hidden bg-emerald-500 text-slate-950 px-1 rounded text-[9px] font-black">보호막</span></span>
+                            <span class="text-muted"><span id="player-hp">100</span>/<span id="player-max-hp">100</span></span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-900/50 rounded-full overflow-hidden p-[1px] border border-slate-700/30">
+                            <div id="player-hp-bar" class="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-300" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-[10px] font-bold mb-1">
+                            <span class="text-cyan-400">💧 MP <span id="buff-power-tag" class="hidden bg-rose-500 text-white px-1 rounded text-[9px] font-black">강타2.2x</span></span>
+                            <span class="text-muted"><span id="player-mp">100</span>/<span id="player-max-mp">100</span></span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-900/50 rounded-full overflow-hidden p-[1px] border border-slate-700/30">
+                            <div id="player-mp-bar" class="h-full rounded-full bg-gradient-to-r from-cyan-500 to-blue-400 transition-all duration-300" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 문제 카드 & 스마트 타이머 & 선택지 & 스킬 -->
+            <main class="flex-1 flex flex-col justify-between p-3.5 overflow-y-auto">
+                
+                <!-- 문제 카드 -->
+                <div class="glass-card rounded-2xl p-3.5 mb-2.5">
+                    <div class="flex items-center justify-between gap-1.5 mb-2">
+                        <span id="q-tag" class="text-[10px] font-bold px-2.5 py-0.5 rounded-md bg-indigo-500/15 text-indigo-400 border border-indigo-500/25 truncate">
+                            단원 태그
+                        </span>
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <span id="smart-timer-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-cyan-500/15 text-cyan-400 border border-cyan-500/30">
+                                ⏱️ 25.0s
+                            </span>
+                            <button onclick="openScratchpad()" class="bg-amber-500/15 hover:bg-amber-500/25 text-amber-400 border border-amber-500/40 text-[11px] font-bold px-2.5 py-0.5 rounded-lg flex items-center gap-1 active:scale-95 transition-all">
+                                <span>✏️ 연습장</span>
+                                <span id="sp-dot" class="hidden w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <p id="q-text" class="text-[14px] sm:text-[15px] font-bold text-main leading-relaxed break-keep">
+                        문제가 표시됩니다.
+                    </p>
+                </div>
+
+                <!-- 일반 4지선다 영역 -->
+                <div id="choices-box" class="grid grid-cols-1 gap-2 mb-2.5"></div>
+
+                <!-- 최종 보스 전용: 핵심 원리 빈칸 2개 조합 영역 -->
+                <div id="boss-keyword-box" class="hidden space-y-2 mb-2">
+                    <div class="bg-amber-500/15 border border-amber-500/50 rounded-xl p-2.5 text-center">
+                        <div class="text-[10px] font-black text-amber-500 mb-1">👑 최종 보스 막타: 핵심 원리 빈칸 2개를 순서대로 선택!</div>
+                        <div id="kw-sentence" class="text-xs sm:text-sm font-bold text-main leading-relaxed"></div>
+                    </div>
+                    <div id="kw-chips" class="grid grid-cols-2 gap-2"></div>
+                </div>
+
+                <!-- 하단 액티브 MP 스킬 3종 -->
+                <div class="grid grid-cols-3 gap-2 pt-1 mt-auto">
+                    <button id="btn-skill-erase" onclick="useSkill('erase')" class="btn-3d bg-gradient-to-b from-indigo-600 to-indigo-700 border border-indigo-400/30 rounded-xl py-2 px-1 flex flex-col items-center">
+                        <span class="text-[11px] font-bold text-white">💡 오답 소거</span>
+                        <span class="text-[10px] font-semibold text-indigo-200">30 MP</span>
+                    </button>
+                    <button id="btn-skill-power" onclick="useSkill('power')" class="btn-3d bg-gradient-to-b from-rose-600 to-rose-700 border border-rose-400/30 rounded-xl py-2 px-1 flex flex-col items-center">
+                        <span class="text-[11px] font-bold text-white">⚡ 집중 강타</span>
+                        <span class="text-[10px] font-semibold text-rose-200">45 MP</span>
+                    </button>
+                    <button id="btn-skill-shield" onclick="useSkill('shield')" class="btn-3d bg-gradient-to-b from-emerald-600 to-emerald-700 border border-emerald-400/30 rounded-xl py-2 px-1 flex flex-col items-center">
+                        <span class="text-[11px] font-bold text-white">🛡️ 논리 방어</span>
+                        <span class="text-[10px] font-semibold text-emerald-200">40 MP</span>
+                    </button>
+                </div>
+            </main>
+        </div>
+
+
+        <!-- =====================================================================
+             3. 투명 오버레이 연습장 + 풀이 캡처 (SCRATCHPAD OVERLAY)
+             ===================================================================== -->
+        <div id="scratchpad-overlay" class="hidden absolute inset-0 z-40 flex flex-col scratchpad-board">
+            <div class="header-shell border-b px-3 py-2 shrink-0">
+                <div class="flex items-center justify-between gap-1.5 mb-1.5">
+                    <span id="sp-board-title" class="text-[11px] font-black text-amber-500">✏️ 투명 칠판 연습장</span>
+                    <div class="flex items-center gap-1.5">
+                        <button onclick="saveScratchpadSnapshot()" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-[11px] font-black px-2.5 py-1 rounded-lg shadow active:scale-95">
+                            📸 노트 저장
+                        </button>
+                        <button onclick="closeScratchpad(true)" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-[11px] font-black px-2.5 py-1 rounded-lg shadow active:scale-95">
+                            👀 보기 선택
+                        </button>
+                    </div>
+                </div>
+                <div id="sp-question-mirror" class="text-xs font-bold text-main sub-box border rounded-lg px-2.5 py-1.5 leading-snug break-keep">
+                    문제 텍스트
+                </div>
+            </div>
+
+            <div id="sp-canvas-container" class="flex-1 relative overflow-hidden">
+                <canvas id="scratchpad-canvas" class="w-full h-full block"></canvas>
+            </div>
+
+            <div class="header-shell border-t px-3 py-2 flex items-center justify-between gap-1.5 shrink-0">
+                <div class="flex items-center gap-2 sub-box px-2.5 py-1.5 rounded-xl border">
+                    <button onclick="setPenColor('#fde047', this)" id="pen-btn-1" class="pen-color-btn w-6 h-6 rounded-full bg-[#fde047] ring-2 ring-indigo-400 scale-110"></button>
+                    <button onclick="setPenColor('#0284c7', this)" id="pen-btn-2" class="pen-color-btn w-6 h-6 rounded-full bg-[#0284c7] opacity-75"></button>
+                    <button onclick="setPenColor('#e11d48', this)" id="pen-btn-3" class="pen-color-btn w-6 h-6 rounded-full bg-[#e11d48] opacity-75"></button>
+                </div>
+                <button id="btn-pen-size" onclick="togglePenSize()" class="sub-box border text-main text-xs font-bold px-2.5 py-2 rounded-xl">
+                    굵기: 보통
+                </button>
+                <button id="btn-pen-eraser" onclick="togglePenEraser()" class="sub-box border text-main text-xs font-bold px-2.5 py-2 rounded-xl">
+                    🧽 지우개
+                </button>
+                <button onclick="clearScratchpad(true)" class="bg-rose-600/20 border border-rose-500/50 text-rose-500 text-xs font-bold px-2.5 py-2 rounded-xl">
+                    🗑️ 비우기
+                </button>
+            </div>
+        </div>
+
+
+        <!-- =====================================================================
+             4. 로그라이크 영재 유물 선택 모달 (RELIC DRAFT MODAL)
+             ===================================================================== -->
+        <div id="modal-relic" class="hidden absolute inset-0 z-35 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="glass-card w-full max-w-[400px] rounded-3xl p-5 border border-amber-400/60 shadow-2xl">
+                <div class="text-center mb-3">
+                    <span class="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-500 border border-amber-400/40">✨ ROGUELIKE ARTIFACT ✨</span>
+                    <h3 class="font-game text-xl text-main mt-1">영재 유물 1개를 선택하세요!</h3>
+                    <p class="text-[11px] text-muted">이번 던전 도전 동안 유지되며 중간에 나가도 자동 저장됩니다.</p>
+                </div>
+                <div id="relic-choices" class="space-y-2.5"></div>
+            </div>
+        </div>
+
+
+        <!-- =====================================================================
+             5. 개념 해설 모달 (EXPLANATION MODAL)
+             ===================================================================== -->
+        <div id="modal-explain" class="hidden absolute inset-0 z-30 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="glass-card w-full max-w-[380px] rounded-3xl p-5 shadow-2xl">
+                <div id="exp-badge" class="inline-block text-xs font-black px-3 py-1 rounded-full mb-2 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
+                    ⭕ 정답입니다!
+                </div>
+                <div id="exp-bonus-line" class="hidden text-[11px] font-bold text-cyan-500 mb-1.5"></div>
+                <div class="text-xs font-bold text-muted mb-1">핵심 개념 해설</div>
+                <p id="exp-text" class="text-sm text-main leading-relaxed sub-box p-3.5 rounded-2xl border mb-4 break-keep">
+                    해설 내용
+                </p>
+                <button onclick="nextQuestion()" class="btn-3d w-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-game text-base py-3 rounded-2xl">
+                    다음 스테이지 ▶
+                </button>
+            </div>
+        </div>
+
+
+        <!-- =====================================================================
+             6. 7일 연속 일일 출석 모달 (DAILY CHECK-IN MODAL)
+             ===================================================================== -->
+        <div id="modal-checkin" class="hidden absolute inset-0 z-35 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="glass-card w-full max-w-[380px] rounded-3xl p-5 border border-indigo-400/50 shadow-2xl">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="font-game text-xl text-indigo-400">📅 7일 연속 출석 보드</h3>
+                    <button onclick="document.getElementById('modal-checkin').classList.add('hidden')" class="text-muted hover:text-main text-sm font-bold px-2">✕</button>
+                </div>
+                <p class="text-[11px] text-muted mb-3">실제 날짜 기준으로 하루 1회 수령되며 연속 출석 시 보상이 커집니다!</p>
+                <div id="checkin-grid" class="grid grid-cols-4 gap-2 mb-4"></div>
+                <button id="btn-claim-checkin" onclick="claimDailyCheckin()" class="btn-3d w-full bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-game text-base py-2.5 rounded-2xl">
+                    오늘 출석 보상 받기!
+                </button>
+            </div>
+        </div>
+
+
+        <!-- =====================================================================
+             7. 설정 & 계정 전환 모달 (SETTINGS MODAL)
+             ===================================================================== -->
+        <div id="modal-settings" class="hidden absolute inset-0 z-45 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="glass-card w-full max-w-[400px] rounded-3xl p-5 border border-indigo-500/40 shadow-2xl max-h-[90dvh] overflow-y-auto space-y-3.5">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-game text-xl text-main">⚙️ 환경 설정 & 계정 금고</h3>
+                    <button onclick="closeSettingsModal()" class="w-8 h-8 rounded-xl sub-box border text-muted hover:text-main font-bold">✕</button>
+                </div>
+
+                <!-- 테마 / 소리 / 진동 토글 -->
+                <div class="space-y-2">
+                    <div class="sub-box border rounded-2xl p-3 flex items-center justify-between">
+                        <div>
+                            <div class="text-xs font-extrabold text-main">🌓 배경 테마 설정</div>
+                            <div class="text-[10px] text-muted">연습장 보드 색상도 함께 연동됩니다</div>
+                        </div>
+                        <div class="flex gap-1 bg-slate-800/30 p-1 rounded-xl">
+                            <button onclick="setTheme('dark')" id="opt-theme-dark" class="px-2.5 py-1 rounded-lg text-xs font-extrabold">🌙 어두움</button>
+                            <button onclick="setTheme('light')" id="opt-theme-light" class="px-2.5 py-1 rounded-lg text-xs font-extrabold">☀️ 밝음</button>
+                        </div>
+                    </div>
+
+                    <div class="sub-box border rounded-2xl p-3 flex items-center justify-between">
+                        <div>
+                            <div class="text-xs font-extrabold text-main">🔊 게임 효과음</div>
+                            <div class="text-[10px] text-muted">타격음, 정답/오답, 승급 사운드</div>
+                        </div>
+                        <button onclick="toggleSoundSetting()" id="opt-sound-btn" class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-emerald-600 text-white">
+                            켜짐 (ON)
+                        </button>
+                    </div>
+
+                    <div class="sub-box border rounded-2xl p-3 flex items-center justify-between">
+                        <div>
+                            <div class="text-xs font-extrabold text-main">📳 진동 피드백</div>
+                            <div class="text-[10px] text-muted">모바일 정답 타격 및 피격 진동</div>
+                        </div>
+                        <button onclick="toggleVibeSetting()" id="opt-vibe-btn" class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-emerald-600 text-white">
+                            켜짐 (ON)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 데이터 자동 보호 상태 안내 -->
+                <div class="sub-box border border-emerald-500/30 rounded-2xl p-3 flex items-center justify-between">
+                    <div>
+                        <div class="text-xs font-extrabold text-emerald-400">🛡️ 계정 금고 실시간 자동 저장</div>
+                        <div class="text-[10px] text-muted">모든 풀이·재화·유물이 이중 백업으로 안전하게 보호됩니다</div>
+                    </div>
+                    <span id="persist-status-badge" class="text-[10px] font-black text-emerald-400 shrink-0">이중백업 활성</span>
+                </div>
+
+                <!-- 로그아웃 (계정 전환) -->
+                <div class="pt-1 border-t border-slate-700/40 flex items-center justify-between gap-2">
+                    <div class="text-[11px] text-muted">
+                        현재 계정: <b id="settings-acc-name" class="text-main">모험가</b>
+                    </div>
+                    <button onclick="logoutAccount()" class="btn-3d bg-gradient-to-r from-rose-600 to-pink-600 text-white text-xs font-extrabold px-4 py-2.5 rounded-xl">
+                        🚪 로그아웃 (계정 전환)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- =====================================================================
+             8. 챕터 결과 모달 (RESULT MODAL)
+             ===================================================================== -->
+        <div id="modal-result" class="hidden absolute inset-0 z-30 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="glass-card w-full max-w-[380px] rounded-3xl p-6 border border-amber-500/40 text-center shadow-2xl">
+                <div id="res-icon" class="text-5xl mb-2">🏆</div>
+                <h2 id="res-title" class="font-game text-2xl text-amber-400 mb-1">챕터 클리어!</h2>
+                <p id="res-desc" class="text-xs text-muted mb-4">수련을 마치고 영재 티어 경험치를 획득했습니다.</p>
+                
+                <div class="sub-box rounded-2xl p-3.5 border space-y-2 text-xs mb-5">
+                    <div class="flex justify-between">
+                        <span class="text-muted">정답 수</span>
+                        <span id="res-correct" class="font-extrabold text-emerald-500">10 / 10</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-muted">획득 골드</span>
+                        <span id="res-gold" class="font-extrabold text-amber-500">+200 G</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-muted">획득 젬</span>
+                        <span id="res-gem" class="font-extrabold text-cyan-500">+15 💎</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-muted">티어 경험치</span>
+                        <span id="res-xp" class="font-extrabold text-indigo-400">+150 XP</span>
+                    </div>
+                </div>
+
+                <button onclick="closeResultToLobby()" class="btn-3d w-full bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-game text-base py-3 rounded-2xl">
+                    로비로 돌아가기
+                </button>
+            </div>
+        </div>
+
+        <!-- 토스트 알림 -->
+        <div id="toast-msg" class="hidden fixed top-14 left-1/2 -translate-x-1/2 bg-slate-900/95 border border-amber-400/80 text-amber-300 px-4 py-2 rounded-full text-xs font-bold shadow-2xl z-50 whitespace-nowrap">
+        </div>
+
+    </div>
+
+    <script>
+        /* ==========================================================================
+           [1] 5단계 영재 티어 & 배율 정의
+           ========================================================================== */
+        const TIERS = [
+            { id: 1, name: '🌱 초급자', minXp: 0,    atkMult: 1.0,  goldMult: 1.0,  badgeBg: 'from-emerald-600 to-teal-700' },
+            { id: 2, name: '📘 중급자', minXp: 300,  atkMult: 1.15, goldMult: 1.15, badgeBg: 'from-blue-600 to-indigo-700' },
+            { id: 3, name: '⚡ 고급자', minXp: 800,  atkMult: 1.3,  goldMult: 1.3,  badgeBg: 'from-violet-600 to-purple-700' },
+            { id: 4, name: '🔥 상급자', minXp: 1600, atkMult: 1.5,  goldMult: 1.5,  badgeBg: 'from-rose-600 to-orange-600' },
+            { id: 5, name: '👑 영재',   minXp: 3000, atkMult: 1.8,  goldMult: 2.0,  badgeBg: 'from-amber-400 via-yellow-500 to-orange-500 text-slate-950' }
+        ];
+
+        function getCurrentTier(xpVal = state.tierXp) {
+            let cur = TIERS[0];
+            for (const t of TIERS) {
+                if (xpVal >= t.minXp) cur = t;
+            }
+            return cur;
+        }
+
+        function getNextTier() {
+            const cur = getCurrentTier();
+            return TIERS.find(t => t.id === cur.id + 1) || null;
+        }
+
+        /* ==========================================================================
+           [2] 로그라이크 유물 (6종) & 파트너 펫 (4종) 데이터베이스
+           ========================================================================== */
+        const RELICS = [
+            { id: 'pythagoras', icon: '📐', name: '피타고라스의 각도기', desc: '수리 논리·기하 문제 정답 시 데미지 +40%' },
+            { id: 'newton',     icon: '🍎', name: '뉴턴의 사과', desc: '오답 1회 자동 방어 (방어막 1회 충전)' },
+            { id: 'alchemist',  icon: '⚗️', name: '연금술사의 계산기', desc: '이번 던전 획득 코인 +35% 증가' },
+            { id: 'boyle',      icon: '🧪', name: '보일의 실린더', desc: '문제 정답 시 MP +20 추가 회복' },
+            { id: 'archimedes', icon: '👑', name: '아르키메데스의 왕관', desc: '치명타(1.8배 피해) 확률 +20%' },
+            { id: 'edison',     icon: '💡', name: '에디슨의 전구', desc: '스마트 보너스 제한시간 +5초 연장' }
+        ];
+
+        const PETS = [
+            { id: 'owl',     icon: '🦉', name: '아인슈타인 부엉이', bonus: '기본 공격력 +12%', atkBonus: 0.12, goldBonus: 0 },
+            { id: 'cat',     icon: '🐈‍⬛', name: '슈뢰딩거의 고양이', bonus: '획득 코인 +15%', atkBonus: 0, goldBonus: 0.15 },
+            { id: 'fox',     icon: '🦊', name: '페르마의 사막여우', bonus: '공격 +10% & 코인 +10%', atkBonus: 0.10, goldBonus: 0.10 },
+            { id: 'dragon',  icon: '🐉', name: '가우스 아기드래곤', bonus: '공격 +20% & 코인 +20%', atkBonus: 0.20, goldBonus: 0.20 }
+        ];
+
+        /* ==========================================================================
+           [3] 인라인 SVG 몬스터 그래픽
+           ========================================================================== */
+        const MONSTER_SVGS = {
+            golem: `<svg viewBox="0 0 120 120" class="w-full h-full"><polygon points="18,45 34,30 38,55 20,62" fill="#4338ca" stroke="#818cf8" stroke-width="2"/><polygon points="102,45 86,30 82,55 100,62" fill="#4338ca" stroke="#818cf8" stroke-width="2"/><polygon points="35,24 85,24 98,55 82,98 38,98 22,55" fill="#312e81" stroke="#a5b4fc" stroke-width="2.5"/><polygon points="60,48 75,65 60,82 45,65" fill="#0ea5e9" stroke="#e0f2fe" stroke-width="2"/><polygon points="40,40 53,45 42,49" fill="#fbbf24"/><polygon points="80,40 67,45 78,49" fill="#fbbf24"/></svg>`,
+            prism: `<svg viewBox="0 0 120 120" class="w-full h-full"><circle cx="60" cy="60" r="44" fill="none" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="6 4"/><polygon points="60,14 96,58 80,104 60,90 40,104 24,58" fill="#7c3aed" stroke="#fbcfe8" stroke-width="2"/><ellipse cx="60" cy="54" rx="14" ry="9" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/><circle cx="60" cy="54" r="5" fill="#fde047"/></svg>`,
+            dragon: `<svg viewBox="0 0 120 120" class="w-full h-full"><path d="M28,55 Q5,25 18,75 Q28,68 35,72 Z" fill="#059669" stroke="#6ee7b7" stroke-width="1.5"/><path d="M92,55 Q115,25 102,75 Q92,68 85,72 Z" fill="#059669" stroke="#6ee7b7" stroke-width="1.5"/><polygon points="42,32 34,12 50,26" fill="#fbbf24"/><polygon points="78,32 86,12 70,26" fill="#fbbf24"/><path d="M36,32 L84,32 L92,65 L60,96 L28,65 Z" fill="#047857" stroke="#a7f3d0" stroke-width="2.5"/><polygon points="42,50 54,55 42,58" fill="#fef08a"/><polygon points="78,50 66,55 78,58" fill="#fef08a"/></svg>`,
+            boss: `<svg viewBox="0 0 120 120" class="w-full h-full"><polygon points="35,28 45,10 60,24 75,10 85,28" fill="#fde047" stroke="#f59e0b" stroke-width="2"/><circle cx="60" cy="64" r="38" fill="#991b1b" stroke="#fcd34d" stroke-width="3"/><polygon points="38,54 54,60 40,64" fill="#ffffff"/><polygon points="82,54 66,60 80,64" fill="#ffffff"/><polygon points="45,78 75,78 60,90" fill="#0f172a" stroke="#fbbf24" stroke-width="1.5"/></svg>`
+        };
+
+        /* ==========================================================================
+           [4] 챕터 & 50문제 + 최종 보스 원리 빈칸 조합 문제
+           ========================================================================== */
+        const CHAPTERS = [
+            { id: 'CH1', badge: '중1-1 수학', title: 'Ch.1 수와 연산 · 방정식과 좌표', desc: '소인수분해, 유리수 사칙연산, 일차방정식 활용, 좌표와 반비례', color: 'from-blue-600 to-indigo-700', svg: 'golem', gem: 15,
+              bossFinisher: { sentence: '반비례 관계 y = a/x (a≠0)의 그래프는 원점에 대칭인 한 쌍의 [ ① ]이며, x와 y의 [ ② ]이 항상 a로 일정하다.', blanks: ['매끄러운 곡선', '곱'], distractors: ['직선', '합'] } },
+            { id: 'CH2', badge: '중1-2 수학', title: 'Ch.2 기하 · 평면도형과 입체도형', desc: '꼬인 위치, 삼각형 합동, 부채꼴, 정다면체, 상대도수', color: 'from-violet-600 to-purple-700', svg: 'golem', gem: 20,
+              bossFinisher: { sentence: '반지름이 r인 구의 겉넓이는 [ ① ]이고, 같은 반지름을 가진 원뿔·구·원기둥의 부피 비는 [ ② ]이다.', blanks: ['4πr²', '1 : 2 : 3'], distractors: ['2πr²', '1 : 3 : 4'] } },
+            { id: 'CH3', badge: '중1-2 과학', title: 'Ch.3 물질의 성질 · 기체와 상태변화', desc: '보일·샤를 법칙, 열에너지 출입, 상태변화와 질량·부피', color: 'from-cyan-600 to-sky-700', svg: 'prism', gem: 20,
+              bossFinisher: { sentence: '물질이 융해·기화할 때는 주변에서 [ ① ]를 흡수하여 온도가 낮아지고, 이 과정에서 분자 개수가 같으므로 [ ② ]은 변하지 않는다.', blanks: ['열에너지', '질량'], distractors: ['운동에너지', '부피'] } },
+            { id: 'CH4', badge: '중1 전범위 과학', title: 'Ch.4 지권 · 힘과 운동 · 빛과 파동', desc: '지권 층상 구조, 중력·탄성력·부력, 생물 5계, 빛의 합성과 파동', color: 'from-emerald-600 to-teal-700', svg: 'dragon', gem: 20,
+              bossFinisher: { sentence: '지진파 중 횡파인 S파가 통과하지 못해 [ ① ]이 액체 상태임을 알 수 있으며, 지구 부피의 약 80%는 고체인 [ ② ]이 차지한다.', blanks: ['외핵', '맨틀'], distractors: ['내핵', '지각'] } },
+            { id: 'CH5', badge: '영재학급 파이널', title: 'Ch.5 영재학급 융합 사고력 · 수리논리', desc: '50! 끝자리 0, 정육면체 절단, 광학·압력·농도 융합 추론', color: 'from-amber-600 to-rose-700', svg: 'boss', gem: 40,
+              bossFinisher: { sentence: '암실에서 파란색 조명 아래 빨간 사과가 검은색으로 보이는 이유는 사과가 파란 빛을 모두 [ ① ]하고 반사하는 빛이 없어 시각 세포가 [ ② ]받지 못하기 때문이다.', blanks: ['흡수', '자극'], distractors: ['투과', '굴절'] } }
+        ];
+
+        const QUESTIONS = [
+            // CH1: 중1-1 수학
+            { id: 'm1_1', ch: 'CH1', cat: 'logic', type: 'calc', tag: '중1-1 수학 · 소인수분해', q: '자연수 72의 약수의 개수는 모두 몇 개인가?', options: ['12개', '10개', '9개', '8개'], ans: 0, exp: '72 = 2³ × 3² 이므로 약수의 개수는 (3+1)×(2+1) = 12개입니다.' },
+            { id: 'm1_2', ch: 'CH1', cat: 'logic', type: 'calc', tag: '중1-1 수학 · 최대공약수', q: '두 수 2²×3×5 와 2×3²×7 의 최대공약수는?', options: ['6', '12', '30', '420'], ans: 0, exp: '공통인 소인수 중 지수가 작은 것을 곱하면 2 × 3 = 6입니다.' },
+            { id: 'm1_3', ch: 'CH1', cat: 'logic', type: 'concept', tag: '중1-1 수학 · 정수와 유리수', q: '다음 중 절댓값이 가장 큰 수는?', options: ['-4.5', '+4', '-3.8', '+4.2'], ans: 0, exp: '절댓값은 원점으로부터의 거리이므로 |-4.5| = 4.5가 가장 큽니다.' },
+            { id: 'm1_4', ch: 'CH1', cat: 'logic', type: 'calc', tag: '중1-1 수학 · 유리수 계산', q: '(-2)³ - (-3)² 의 계산 결과는?', options: ['-17', '-1', '1', '17'], ans: 0, exp: '(-2)³ = -8, (-3)² = +9 이므로 (-8) - (+9) = -17입니다.' },
+            { id: 'm1_5', ch: 'CH1', cat: 'logic', type: 'concept', tag: '중1-1 수학 · 문자와 식', q: '정가가 a원인 물건을 20% 할인하여 살 때 지불할 금액은?', options: ['0.8a 원', '0.2a 원', 'a - 20 원', '1.2a 원'], ans: 0, exp: '20% 할인은 정가의 80%를 내는 것이므로 0.8a 원입니다.' },
+            { id: 'm1_6', ch: 'CH1', cat: 'logic', type: 'calc', tag: '중1-1 수학 · 일차방정식', q: '일차방정식 3(x - 2) = x + 4 의 해는?', options: ['x = 5', 'x = 3', 'x = 2', 'x = 1'], ans: 0, exp: '3x - 6 = x + 4 → 2x = 10 → x = 5 입니다.' },
+            { id: 'm1_7', ch: 'CH1', cat: 'logic', type: 'calc', tag: '중1-1 수학 · 좌표평면', q: '점 P(a, b)가 제2사분면 위의 점일 때, 점 Q(b, -a)는 어느 사분면 위의 점인가?', options: ['제1사분면', '제2사분면', '제3사분면', '제4사분면'], ans: 0, exp: '제2사분면이므로 a < 0, b > 0 입니다. 따라서 b > 0, -a > 0 이 되어 제1사분면입니다.' },
+            { id: 'm1_8', ch: 'CH1', cat: 'logic', type: 'calc', tag: '중1-1 수학 · 반비례', q: 'y가 x에 반비례하고 x = 4일 때 y = -3이다. x = -2일 때 y의 값은?', options: ['6', '-6', '3/2', '-3/2'], ans: 0, exp: '반비례 관계식 y = a/x 에서 a = xy = 4 × (-3) = -12 입니다. x = -2를 대입하면 y = -12 ÷ (-2) = 6입니다.' },
+            { id: 'm1_9', ch: 'CH1', cat: 'logic', type: 'calc', tag: '중1-1 수학 · 제곱수 만들기', q: '45에 가장 작은 자연수 a를 곱하여 어떤 자연수의 제곱이 되게 할 때, a의 값은?', options: ['5', '3', '9', '15'], ans: 0, exp: '45 = 3² × 5 이므로 지수를 모두 짝수로 만들려면 5를 곱해야 합니다.' },
+            { id: 'm1_10', ch: 'CH1', cat: 'logic', type: 'calc', tag: '중1-1 수학 · 방정식 활용', q: '연속하는 세 홀수의 합이 57일 때, 세 홀수 중 가장 큰 수는?', options: ['21', '19', '23', '17'], ans: 0, exp: '(x-2) + x + (x+2) = 57 → 3x = 57 → x = 19 이므로 가장 큰 수는 21입니다.' },
+
+            // CH2: 중1-2 수학 (기하)
+            { id: 'm2_1', ch: 'CH2', cat: 'geometry', type: 'concept', tag: '중1-2 수학 · 위치 관계', q: '공간에서 두 직선이 만나지도 않고 평행하지도 않을 때, 두 직선의 위치 관계는?', options: ['꼬인 위치에 있다', '수직으로 만난다', '한 평면 위에 있다', '일치한다'], ans: 0, exp: '공간에서 만나지도 않고 평행하지도 않은 두 직선은 꼬인 위치에 있습니다.' },
+            { id: 'm2_2', ch: 'CH2', cat: 'geometry', type: 'concept', tag: '중1-2 수학 · 삼각형의 결정조건', q: '다음 중 삼각형 ABC가 하나로 결정되지 않는 조건은?', options: ['세 내각의 크기가 주어질 때', '세 변의 길이가 주어질 때', '두 변과 그 끼인각이 주어질 때', '한 변과 그 양 끝 각이 주어질 때'], ans: 0, exp: '세 각의 크기만 주어지면 크기가 다른 닮은 삼각형이 무수히 많이 그려집니다.' },
+            { id: 'm2_3', ch: 'CH2', cat: 'geometry', type: 'calc', tag: '중1-2 수학 · 다각형의 각', q: '정팔각형의 한 내각의 크기와 한 외각의 크기의 차는 몇 도인가?', options: ['90°', '45°', '135°', '60°'], ans: 0, exp: '한 외각은 360°÷8 = 45°, 한 내각은 135°이므로 차는 90°입니다.' },
+            { id: 'm2_4', ch: 'CH2', cat: 'geometry', type: 'calc', tag: '중1-2 수학 · 부채꼴', q: '반지름이 6cm이고 중심각이 120°인 부채꼴의 호의 길이는?', options: ['4π cm', '12π cm', '6π cm', '2π cm'], ans: 0, exp: '호의 길이 = 2π × 6 × (120/360) = 4π cm입니다.' },
+            { id: 'm2_5', ch: 'CH2', cat: 'geometry', type: 'concept', tag: '중1-2 수학 · 정다면체', q: '면의 모양이 정오각형이고 한 꼭짓점에 3개의 면이 모이는 정다면체는?', options: ['정십이면체', '정이십면체', '정팔면체', '정사면체'], ans: 0, exp: '면이 정오각형이고 한 꼭짓점에 3개의 면이 모이는 정다면체는 정십이면체뿐입니다. (정이십면체는 정삼각형 5개가 모입니다.)' },
+            { id: 'm2_6', ch: 'CH2', cat: 'geometry', type: 'calc', tag: '중1-2 수학 · 입체도형 부피', q: '밑면의 반지름이 3cm이고 높이가 5cm인 원뿔의 부피는?', options: ['15π cm³', '45π cm³', '30π cm³', '9π cm³'], ans: 0, exp: '원뿔의 부피 = ⅓ × (π × 3²) × 5 = 15π cm³입니다.' },
+            { id: 'm2_7', ch: 'CH2', cat: 'geometry', type: 'calc', tag: '중1-2 수학 · 구의 겉넓이와 부피', q: '반지름이 3cm인 구의 겉넓이와 부피를 순서대로 구한 것은?', options: ['36π cm², 36π cm³', '18π cm², 36π cm³', '36π cm², 27π cm³', '9π cm², 36π cm³'], ans: 0, exp: '겉넓이 = 4πr² = 36π, 부피 = (4/3)πr³ = 36π 입니다.' },
+            { id: 'm2_8', ch: 'CH2', cat: 'geometry', type: 'concept', tag: '중1-2 수학 · 통계', q: '전체 도수가 다른 두 집단의 분포 상태를 비교할 때 가장 편리한 값은?', options: ['상대도수', '계급값', '누적도수', '계급의 크기'], ans: 0, exp: '전체 도수가 다를 때는 총합이 1인 상대도수로 비교해야 정확합니다.' },
+            { id: 'm2_9', ch: 'CH2', cat: 'geometry', type: 'calc', tag: '중1-2 수학 · 대각선 개수', q: '한 꼭짓점에서 그을 수 있는 대각선이 6개인 다각형의 대각선 총개수는?', options: ['27개', '18개', '35개', '54개'], ans: 0, exp: 'n - 3 = 6 이므로 구각형(n=9)입니다. 총 대각선은 9×6÷2 = 27개입니다.' },
+            { id: 'm2_10', ch: 'CH2', cat: 'geometry', type: 'concept', tag: '중1-2 수학 · 회전체', q: '직각삼각형을 직각을 낀 한 변을 회전축으로 하여 1회전 시킬 때 생기는 도형은?', options: ['원뿔', '원기둥', '구', '원뿔대'], ans: 0, exp: '직각삼각형을 직각을 낀 변을 축으로 회전시키면 원뿔이 됩니다.' },
+
+            // CH3: 중1-2 과학 (기체와 상태변화)
+            { id: 's2_1', ch: 'CH3', cat: 'science', type: 'concept', tag: '중1-2 과학 · 기체의 성질', q: '일정한 온도에서 기체의 부피는 압력에 반비례한다는 법칙은?', options: ['보일 법칙', '샤를 법칙', '질량 보존 법칙', '일정 성분비 법칙'], ans: 0, exp: '온도가 일정할 때 압력과 부피가 반비례하는 현상은 보일 법칙입니다.' },
+            { id: 's2_2', ch: 'CH3', cat: 'science', type: 'concept', tag: '중1-2 과학 · 샤를 법칙', q: '찌그러진 탁구공을 뜨거운 물에 넣으면 다시 펴지는 현상과 관련된 법칙은?', options: ['샤를 법칙', '보일 법칙', '빛의 굴절 법칙', '부력의 원리'], ans: 0, exp: '압력이 일정할 때 온도가 높아지면 기체 부피가 커지는 샤를 법칙의 예입니다.' },
+            { id: 's2_3', ch: 'CH3', cat: 'science', type: 'concept', tag: '중1-2 과학 · 상태 변화', q: '열에너지를 흡수하는 상태 변화만으로 바르게 짝지어진 것은?', options: ['융해, 기화, 승화(고→기)', '응고, 액화, 승화(기→고)', '융해, 액화, 응고', '기화, 응고, 액화'], ans: 0, exp: '분자 운동이 활발해지는 융해, 기화, 승화(고체→기체)는 열을 흡수합니다.' },
+            { id: 's2_4', ch: 'CH3', cat: 'science', type: 'concept', tag: '중1-2 과학 · 상태 변화와 질량', q: '물질이 상태 변화를 할 때 변하지 않는 것과 변하는 것을 바르게 짝지은 것은?', options: ['질량: 불변 / 부피: 변함', '질량: 변함 / 부피: 불변', '질량과 부피 모두 변함', '분자 종류가 변함'], ans: 0, exp: '분자 개수는 그대로이므로 질량은 변하지 않고, 분자 배열이 달라져 부피만 변합니다.' },
+            { id: 's2_5', ch: 'CH3', cat: 'science', type: 'concept', tag: '중1-2 과학 · 기화열', q: '여름날 마당에 물을 뿌리면 시원해지는 이유는 물이 증발하면서 주변의 무엇을 흡수하기 때문인가?', options: ['기화열', '응고열', '액화열', '융해열'], ans: 0, exp: '액체가 기체로 기화하면서 주변의 열에너지(기화열)를 흡수해 시원해집니다.' },
+            { id: 's2_6', ch: 'CH3', cat: 'science', type: 'concept', tag: '중1-2 과학 · 확산 현상', q: '향수병 마개를 열면 방 전체로 향기가 퍼져나가는 현상은 분자가 스스로 끊임없이 움직이는 무엇 때문인가?', options: ['확산 (분자 운동)', '증발', '대류', '복사'], ans: 0, exp: '물질을 이루는 분자가 스스로 운동하여 퍼져나가는 현상을 확산이라고 합니다.' },
+            { id: 's2_7', ch: 'CH3', cat: 'science', type: 'calc', tag: '중1-2 과학 · 보일 법칙 계산', q: '1기압에서 부피가 60mL인 기체에 온도를 일정하게 유지하며 3기압의 압력을 가하면 부피는 몇 mL가 되는가?', options: ['20mL', '30mL', '180mL', '40mL'], ans: 0, exp: '보일 법칙(P₁V₁ = P₂V₂)에 의해 1 × 60 = 3 × V₂ → V₂ = 20mL입니다.' },
+            { id: 's2_8', ch: 'CH3', cat: 'science', type: 'concept', tag: '중1-2 과학 · 융해열 이용', q: '이글루 안쪽에 물을 뿌려 얼리면 내부가 따뜻해지는 현상은 물이 얼면서 방출하는 무엇 때문인가?', options: ['응고열', '융해열', '기화열', '승화열'], ans: 0, exp: '액체(물)가 고체(얼음)로 응고할 때 주변으로 열에너지(응고열)를 방출합니다.' },
+            { id: 's2_9', ch: 'CH3', cat: 'science', type: 'concept', tag: '중1-2 과학 · 가열 곡선', q: '고체 물질을 가열할 때 온도가 일정하게 유지되는 구간에서 가해준 열에너지는 모두 어디에 쓰이는가?', options: ['상태 변화 (분자 배열 변화)', '분자 운동 속도 증가', '온도 상승', '분자 크기 팽창'], ans: 0, exp: '녹는점이나 끓는점에서는 가해준 열이 모두 상태 변화(분자 인력 극복)에 쓰이므로 온도가 일정합니다.' },
+            { id: 's2_10', ch: 'CH3', cat: 'science', type: 'concept', tag: '중1-2 과학 · 승화 현상', q: '겨울철 그늘진 곳에 쌓인 눈이 녹지 않고 조금씩 줄어드는 현상에 해당하는 상태 변화는?', options: ['승화 (고체 → 기체)', '융해 (고체 → 액체)', '기화 (액체 → 기체)', '액화 (기체 → 액체)'], ans: 0, exp: '얼음(고체)이 액체를 거치지 않고 수증기(기체)로 바로 변하는 승화 현상입니다.' },
+
+            // CH4: 중1 전범위 과학 (지권, 힘, 생물, 빛과 파동)
+            { id: 's1_1', ch: 'CH4', cat: 'science', type: 'concept', tag: '중1-1 과학 · 지권의 변화', q: '지구 내부 구조 중 부피가 가장 크며 고체 상태이지만 대류가 일어나는 층은?', options: ['맨틀', '지각', '외핵', '내핵'], ans: 0, exp: '맨틀은 지구 부피의 약 80%를 차지하며 유동성이 있는 고체로 대류가 일어납니다.' },
+            { id: 's1_3', ch: 'CH4', cat: 'science', type: 'concept', tag: '중1-1 과학 · 화성암', q: '마그마가 지하 깊은 곳에서 천천히 식어 결정이 크고 밝은 색을 띠는 암석은?', options: ['화강암', '현무암', '석회암', '편마암'], ans: 0, exp: '지하 깊은 곳에서 천천히 식은 심성암 중 밝은 색 암석은 화강암입니다.' },
+            { id: 's1_4', ch: 'CH4', cat: 'science', type: 'calc', tag: '중1-1 과학 · 중력과 질량', q: '지구에서 질량이 60kg인 사람이 중력이 1/6인 달에 갔을 때 질량과 무게는?', options: ['질량 60kg, 무게 약 98N', '질량 10kg, 무게 약 98N', '질량 60kg, 무게 약 588N', '질량 10kg, 무게 약 588N'], ans: 0, exp: '질량은 변하지 않고(60kg), 무게는 60 × 9.8 × (1/6) = 98N이 됩니다.' },
+            { id: 's1_5', ch: 'CH4', cat: 'science', type: 'concept', tag: '중1-1 과학 · 부력', q: '물속에 잠긴 돌의 무게가 공기 중에서보다 가볍게 측정되는 이유는?', options: ['중력과 반대 방향의 부력 때문에', '중력과 같은 방향의 탄성력 때문에', '운동 방해 마찰력 때문에', '지구 자기력 때문에'], ans: 0, exp: '액체나 기체가 물체를 위쪽(중력 반대 방향)으로 밀어 올리는 힘을 부력이라고 합니다.' },
+            { id: 's1_6', ch: 'CH4', cat: 'science', type: 'calc', tag: '중1-1 과학 · 탄성력', q: '용수철에 10N의 추를 매달았더니 2cm 늘어났다. 25N의 추를 매달면 몇 cm 늘어나는가?', options: ['5cm', '4cm', '6cm', '7.5cm'], ans: 0, exp: '탄성력은 늘어난 길이에 비례하므로 10 : 2 = 25 : x → x = 5cm입니다.' },
+            { id: 's1_8', ch: 'CH4', cat: 'science', type: 'concept', tag: '중1-1 과학 · 생물 5계', q: '핵막이 없는 원핵세포로 이루어져 있으며 대장균, 젖산균이 속하는 계는?', options: ['원핵생물계', '원생생물계', '균계', '식물계'], ans: 0, exp: '뚜렷한 핵이 없는 단세포 생물은 원핵생물계에 속합니다.' },
+            { id: 's2_5b', ch: 'CH4', cat: 'science', type: 'concept', tag: '중1-2 과학 · 빛의 합성', q: '빛의 삼원색(빨강, 초록, 파랑)을 같은 세기로 모두 합성하면 무슨 색이 되는가?', options: ['흰색 (백색광)', '검은색', '노란색', '자홍색'], ans: 0, exp: '빛의 삼원색(RGB)을 모두 합치면 흰색 빛이 됩니다.' },
+            { id: 's2_6b', ch: 'CH4', cat: 'science', type: 'concept', tag: '중1-2 과학 · 빛의 분산', q: '햇빛이 프리즘을 통과해 분산될 때 굴절이 가장 크게 일어나는 색은?', options: ['보라색', '빨간색', '초록색', '노란색'], ans: 0, exp: '프리즘을 통과할 때 빨간색이 가장 적게, 보라색이 가장 많이 굴절합니다.' },
+            { id: 's2_8b', ch: 'CH4', cat: 'science', type: 'concept', tag: '중1-2 과학 · 파동', q: '파동의 진동 방향과 진행 방향이 서로 수직인 파동(빛, 물결파 등)을 무엇이라 하는가?', options: ['횡파', '종파', '음파', '초음파'], ans: 0, exp: '진동 방향과 진행 방향이 수직인 파동은 횡파, 나란한 파동(소리)은 종파입니다.' },
+            { id: 's2_9b', ch: 'CH4', cat: 'science', type: 'concept', tag: '중1-2 과학 · 소리의 3요소', q: '소리의 3요소 중 파동의 진폭이 클수록 커지는 특성은?', options: ['소리의 크기 (큰 소리)', '소리의 높낮이', '소리의 맵시 (음색)', '소리의 속력'], ans: 0, exp: '진폭이 클수록 큰 소리, 진동수가 클수록 높은 소리가 납니다.' },
+
+            // CH5: 영재학급 실전 융합
+            { id: 'g_1', ch: 'CH5', cat: 'fusion', type: 'calc', tag: '영재 실전 · 정수론', q: '1부터 50까지의 자연수를 모두 곱한 수(50!)의 끝자리에는 연속해서 0이 몇 개 붙는가?', options: ['12개', '10개', '11개', '5개'], ans: 0, exp: '끝자리 0은 (2×5)의 개수만큼 생깁니다. 50 이하에서 5의 배수 10개 + 25의 배수 2개 = 12개입니다.' },
+            { id: 'g_2', ch: 'CH5', cat: 'fusion', type: 'calc', tag: '영재 실전 · 기하 추론', q: '정육면체의 한 꼭짓점에서 만나는 세 모서리의 중점을 지나는 평면으로 잘라낸 삼각뿔의 부피는 원래 정육면체 부피의 몇 분의 몇인가?', options: ['1/48', '1/24', '1/16', '1/12'], ans: 0, exp: '정육면체 한 변을 2라 하면 전체 부피는 2³ = 8입니다. 잘린 삼각뿔은 세 모서리 길이가 각각 1이므로 부피가 ⅓ × (½ × 1 × 1) × 1 = 1/6 이 되어, 전체의 (1/6) ÷ 8 = 1/48 입니다.' },
+            { id: 'g_3', ch: 'CH5', cat: 'fusion', type: 'calc', tag: '영재 실전 · 광학+색채', q: '암실에서 파란색 셀로판지를 씌운 손전등으로 빨간색 사과를 비추면 사과는 무슨 색으로 보이는가?', options: ['검은색', '보라색', '빨간색', '파란색'], ans: 0, exp: '빨간 사과는 빨간 빛만 반사하고 파란 빛은 모두 흡수하므로 반사되는 빛이 없어 검은색으로 보입니다.' },
+            { id: 'g_4', ch: 'CH5', cat: 'fusion', type: 'calc', tag: '영재 실전 · 압력+부피', q: '수심 20m 물속에서 방출된 기포가 수면(1기압)까지 올라올 때 온도가 일정하다면 기포의 부피는 처음의 몇 배가 되는가? (수심 10m마다 수압 1기압 증가)', options: ['3배', '2배', '4배', '1/3배'], ans: 0, exp: '수심 20m의 압력은 대기압(1)+수압(2) = 3기압이므로 수면(1기압)에 오면 부피가 3배가 됩니다.' },
+            { id: 'g_5', ch: 'CH5', cat: 'fusion', type: 'calc', tag: '영재 실전 · 함수+탄성력', q: '원래 길이가 15cm인 용수철에 추를 매달 때 늘어난 길이 y(cm)와 무게 x(N) 사이에 y = 0.4x가 성립한다. 전체 길이가 23cm가 되려면 몇 N의 추를 매달아야 하는가?', options: ['20N', '57.5N', '8N', '32N'], ans: 0, exp: '늘어난 길이 y = 23 - 15 = 8cm 이므로 8 = 0.4x → x = 20N입니다. (전체 길이 함정 주의!)' },
+            { id: 'g_6', ch: 'CH5', cat: 'fusion', type: 'concept', tag: '영재 실전 · 오일러 공식', q: '모든 볼록 다면체에서 (꼭짓점 v) - (모서리 e) + (면 f) = 2 가 성립한다. 정이십면체에서 이 값은 얼마인가?', options: ['2', '0', '1', '12'], ans: 0, exp: '오일러 다면체 정리에 의해 모든 볼록 다면체는 v - e + f = 2 를 만족합니다.' },
+            { id: 'g_7', ch: 'CH5', cat: 'fusion', type: 'calc', tag: '영재 실전 · 상태변화 함정', q: '물이 얼 때 부피가 10% 증가한다. 그렇다면 110cm³의 얼음이 모두 녹아 물이 될 때 물의 부피는 몇 cm³인가?', options: ['100cm³', '99cm³', '110cm³', '121cm³'], ans: 0, exp: '물 100cm³가 얼면 110cm³가 되므로, 110cm³의 얼음이 녹으면 원래 물의 부피인 100cm³가 됩니다.' },
+            { id: 'g_8', ch: 'CH5', cat: 'fusion', type: 'calc', tag: '영재 실전 · 나머지 정리', q: '4로 나누면 3이 남고, 5로 나누면 4가 남으며, 6으로 나누면 5가 남는 가장 작은 자연수는?', options: ['59', '61', '119', '29'], ans: 0, exp: '각 나누는 수보다 1씩 부족하므로 (4, 5, 6의 최소공배수) - 1 = 60 - 1 = 59입니다.' },
+            { id: 'g_9', ch: 'CH5', cat: 'fusion', type: 'calc', tag: '영재 실전 · 소금물 농도', q: '10% 소금물 200g에서 물을 몇 g 증발시키면 25%의 소금물이 되는가?', options: ['120g', '80g', '100g', '150g'], ans: 0, exp: '소금의 양은 20g으로 변함없으므로 20 / (200 - x) × 100 = 25 → 200 - x = 80 → x = 120g입니다.' },
+            { id: 'g_10', ch: 'CH5', cat: 'fusion', type: 'calc', tag: '영재 실전 · 거울 상의 개수', q: '두 평면거울을 60° 각도로 세워놓고 그 사이에 물체를 놓으면 거울 속에 생기는 상은 모두 몇 개인가?', options: ['5개', '6개', '4개', '3개'], ans: 0, exp: '두 거울이 이루는 각이 θ일 때 상의 개수는 (360° ÷ θ) - 1 = (360 ÷ 60) - 1 = 5개입니다.' }
+        ];
+
+        /* ==========================================================================
+           [5] Web Audio API 효과음 & 진동 피드백
+           ========================================================================== */
+        function triggerVibe(pattern) {
+            if (!state.settings || !state.settings.vibe) return;
+            try {
+                if (navigator.vibrate) navigator.vibrate(pattern);
+            } catch (e) {}
+        }
+
+        const Sound = {
+            ctx: null,
+            play(freq, type, duration, vol = 0.12, endFreq = null) {
+                if (!state.settings || !state.settings.sound) return;
+                try {
+                    if (!this.ctx) {
+                        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                        if (AudioCtx) this.ctx = new AudioCtx();
+                    }
+                    if (!this.ctx) return;
+                    if (this.ctx.state === 'suspended') this.ctx.resume();
+
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = type;
+                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                    if (endFreq) osc.frequency.exponentialRampToValueAtTime(endFreq, this.ctx.currentTime + duration);
+
+                    gain.gain.setValueAtTime(vol, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + duration);
+                } catch (e) {}
+            },
+            click() { this.play(580, 'sine', 0.05, 0.08); },
+            hit(crit) {
+                triggerVibe(crit ? [35, 30, 50] : 25);
+                if (crit) {
+                    this.play(440, 'sawtooth', 0.14, 0.16, 980);
+                    setTimeout(() => this.play(880, 'triangle', 0.16, 0.18), 60);
+                } else {
+                    this.play(300, 'triangle', 0.12, 0.14, 600);
+                }
+            },
+            wrong() {
+                triggerVibe([80, 40, 80]);
+                this.play(160, 'sawtooth', 0.25, 0.16, 70);
+            },
+            bossLoot() {
+                triggerVibe([40, 30, 40, 30, 90]);
+                [523, 659, 784, 1046, 1318].forEach((f, idx) => {
+                    setTimeout(() => this.play(f, 'triangle', 0.18, 0.16), idx * 70);
+                });
+            },
+            levelup() {
+                triggerVibe([50, 40, 100]);
+                [523, 659, 784, 1046].forEach((f, idx) => {
+                    setTimeout(() => this.play(f, 'triangle', 0.2, 0.15), idx * 85);
+                });
+            }
+        };
+
+        /* ==========================================================================
+           [6] 간편 계정 금고 & 데이터 초기화 방지 이중 보호 시스템
+           ========================================================================== */
+        const ACCOUNTS_INDEX_KEY = 'genius_rpg_accounts_v1';
+        const ACTIVE_USER_KEY    = 'genius_rpg_active_user_v1';
+        const LEGACY_SAVE_KEY    = 'genius_rpg_v5';
+
+        const DEFAULT_USER_DATA = {
+            tierXp: 0,
+            gold: 200,
+            gem: 15,
+            upgrades: { atk: 1, hp: 1, gold: 1, crit: 1 },
+            ownedPets: ['owl'],
+            equippedPet: 'owl',
+            clearedChapters: [],
+            wrongNotes: [],
+            savedNotes: [],
+            categoryStats: {
+                logic:    { correct: 0, total: 0 },
+                geometry: { correct: 0, total: 0 },
+                science:  { correct: 0, total: 0 },
+                fusion:   { correct: 0, total: 0 }
+            },
+            checkin: { lastDate: '', streak: 0 },
+            settings: { theme: 'dark', sound: true, vibe: true },
+            activeRun: null
+        };
+
+        let accountsList = [];
+        let currentAccount = null;
+        let state = JSON.parse(JSON.stringify(DEFAULT_USER_DATA));
+
+        async function requestPersistentStorage() {
+            try {
+                if (navigator.storage && navigator.storage.persist) {
+                    const granted = await navigator.storage.persist();
+                    const badge = document.getElementById('persist-status-badge');
+                    if (badge) {
+                        badge.textContent = granted ? '영구잠금 + 이중백업 활성' : '이중 자동백업 활성';
+                    }
+                }
+            } catch (e) {}
+        }
+
+        function getAccountStorageKey(accId) {
+            return `genius_rpg_vault_${accId}`;
+        }
+
+        function loadAccountsRegistry() {
+            try {
+                const raw = localStorage.getItem(ACCOUNTS_INDEX_KEY);
+                accountsList = raw ? JSON.parse(raw) : [];
+            } catch (e) {
+                accountsList = [];
+            }
+
+            try {
+                const legacyRaw = localStorage.getItem(LEGACY_SAVE_KEY);
+                if (legacyRaw && accountsList.length === 0) {
+                    const legacyData = JSON.parse(legacyRaw);
+                    const migId = 'acc_' + Date.now();
+                    const migAcc = { id: migId, name: '기존모험가', pin: 'test1234', createdAt: getTodayStr() };
+                    accountsList.push(migAcc);
+                    localStorage.setItem(ACCOUNTS_INDEX_KEY, JSON.stringify(accountsList));
+                    const merged = mergeWithDefaults(legacyData);
+                    localStorage.setItem(getAccountStorageKey(migId), JSON.stringify(merged));
+                    localStorage.setItem(getAccountStorageKey(migId) + '_backup', JSON.stringify(merged));
+                    localStorage.setItem(ACTIVE_USER_KEY, migId);
+                    localStorage.removeItem(LEGACY_SAVE_KEY);
+                }
+            } catch (e) {}
+        }
+
+        function saveAccountsRegistry() {
+            try {
+                localStorage.setItem(ACCOUNTS_INDEX_KEY, JSON.stringify(accountsList));
+            } catch (e) {}
+        }
+
+        function mergeWithDefaults(parsed) {
+            return {
+                ...JSON.parse(JSON.stringify(DEFAULT_USER_DATA)),
+                ...parsed,
+                upgrades: { ...DEFAULT_USER_DATA.upgrades, ...(parsed.upgrades || {}) },
+                categoryStats: { ...DEFAULT_USER_DATA.categoryStats, ...(parsed.categoryStats || {}) },
+                checkin: { ...DEFAULT_USER_DATA.checkin, ...(parsed.checkin || {}) },
+                settings: { ...DEFAULT_USER_DATA.settings, ...(parsed.settings || {}) }
+            };
+        }
+
+        function loadAccountVault(accId) {
+            const key = getAccountStorageKey(accId);
+            const backupKey = key + '_backup';
+            let loaded = null;
+            try {
+                const raw = localStorage.getItem(key);
+                if (raw) loaded = JSON.parse(raw);
+            } catch (e) {}
+            if (!loaded) {
+                try {
+                    const bRaw = localStorage.getItem(backupKey);
+                    if (bRaw) loaded = JSON.parse(bRaw);
+                } catch (e) {}
+            }
+            state = loaded ? mergeWithDefaults(loaded) : JSON.parse(JSON.stringify(DEFAULT_USER_DATA));
+            applyTheme(state.settings.theme);
+        }
+
+        function saveState() {
+            if (!currentAccount) return;
+            const key = getAccountStorageKey(currentAccount.id);
+            const json = JSON.stringify(state);
+            try {
+                localStorage.setItem(key, json);
+                localStorage.setItem(key + '_backup', json);
+            } catch (e) {}
+        }
+
+        function togglePwVisibility(inputId, btnEl) {
+            const el = document.getElementById(inputId);
+            if (!el) return;
+            const isPw = el.type === 'password';
+            el.type = isPw ? 'text' : 'password';
+            btnEl.textContent = isPw ? '🙈 숨기기' : '👁️ 보기';
+        }
+
+        function openAuthScreen() {
+            document.getElementById('modal-settings').classList.add('hidden');
+            document.getElementById('screen-lobby').classList.add('hidden');
+            document.getElementById('screen-battle').classList.add('hidden');
+            document.getElementById('screen-auth').classList.remove('hidden');
+            switchAuthMode('login');
+        }
+
+        function switchAuthMode(mode) {
+            const isLogin = mode === 'login';
+            document.getElementById('auth-panel-login').classList.toggle('hidden', !isLogin);
+            document.getElementById('auth-panel-register').classList.toggle('hidden', isLogin);
+            document.getElementById('auth-tab-login').className = isLogin
+                ? 'py-2.5 rounded-xl bg-indigo-600 text-white text-xs font-bold shadow-sm transition-all'
+                : 'py-2.5 rounded-xl text-muted text-xs font-bold transition-all';
+            document.getElementById('auth-tab-register').className = !isLogin
+                ? 'py-2.5 rounded-xl bg-emerald-600 text-white text-xs font-bold shadow-sm transition-all'
+                : 'py-2.5 rounded-xl text-muted text-xs font-bold transition-all';
+            if (!isLogin) onRegisterInputChange();
+        }
+
+        function isDuplicateNickname(name) {
+            const normalized = name.trim().toLowerCase();
+            if (!normalized) return false;
+            return accountsList.some(a => a.name.trim().toLowerCase() === normalized);
+        }
+
+        function sanitizeNicknameInput(inputEl, isRegister = false) {
+            const raw = inputEl.value;
+            // 한글(완성형+자모+천지인 아래아 ㆍ/ᆢ), 영문, 숫자, 밑줄(_), 마침표(.)만 허용하고 띄어쓰기 및 기타 특수기호 즉시 제거
+            const cleaned = raw.replace(/[^a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\u318D\u119E\u11A2_.]/g, '');
+            if (raw !== cleaned) {
+                inputEl.value = cleaned;
+                showToast('⚠️ 띄어쓰기 및 특수기호(_, . 제외)는 입력할 수 없습니다.');
+                if (isRegister) {
+                    const nameStatus = document.getElementById('reg-name-status');
+                    nameStatus.textContent = '⚠️ 띄어쓰기 및 특수기호(_, . 제외)는 자동 차단됩니다.';
+                    nameStatus.className = 'mt-1.5 text-[11px] font-extrabold text-amber-400';
+                }
+            }
+        }
+
+        function isValidStrongPassword(pw, nickname = '') {
+            const lenOk = pw.length >= 4 && pw.length <= 20;
+            const hasAlpha = /[a-zA-Z]/.test(pw);
+            const hasNum = /[0-9]/.test(pw);
+            const mixOk = hasAlpha && hasNum;
+
+            const lower = pw.toLowerCase();
+            const lowerNick = nickname.trim().toLowerCase();
+
+            // 1) 고유 문자 개수 검사 (11111wwwwww 처럼 2~3종류만 반복하는 경우 차단 -> 최소 4종류 이상)
+            const uniqueCount = new Set(lower).size;
+            const uniqOk = pw.length > 0 && uniqueCount >= 4;
+
+            // 2) 단일 문자 과다 편중 검사 (한 문자가 전체 길이의 50% 이상 차지하면 차단)
+            const freqMap = {};
+            let maxFreq = 0;
+            for (const ch of lower) {
+                freqMap[ch] = (freqMap[ch] || 0) + 1;
+                if (freqMap[ch] > maxFreq) maxFreq = freqMap[ch];
+            }
+            const dominantRatioOk = pw.length > 0 && (maxFreq / pw.length) < 0.5;
+
+            // 3) 연속 반복 및 뻔한 키보드/숫자 패턴 차단
+            const weakPatterns = [
+                '1234', '2345', '3456', '4567', '5678', '6789', '7890',
+                '0987', '9876', '8765', '7654', '6543', '5432', '4321',
+                'abcd', 'bcde', 'qwer', 'asdf', 'zxcv', 'pass', 'admin', 'test', 'genius', '0000', '1111', 'wwww'
+            ];
+            const hasRepeatedChars = /(.)\1\1/.test(lower);
+            const hasWeakSequence = weakPatterns.some(pat => lower.includes(pat));
+            const containsNick = lowerNick.length >= 2 && lower.includes(lowerNick);
+            const notEasy = pw.length > 0 && dominantRatioOk && !hasRepeatedChars && !hasWeakSequence && !containsNick;
+
+            let reason = '';
+            if (!lenOk) reason = '비밀번호 길이를 4~20자로 맞춰주세요.';
+            else if (!mixOk) reason = '영문과 숫자를 모두 섞어야 합니다.';
+            else if (!uniqOk) reason = '서로 다른 문자를 4종류 이상 섞어 주세요.';
+            else if (!dominantRatioOk || hasRepeatedChars) reason = '같은 문자나 숫자를 너무 많이 반복할 수 없습니다.';
+            else if (containsNick) reason = '닉네임이 포함된 비밀번호는 사용할 수 없습니다.';
+            else if (hasWeakSequence) reason = '1234, qwer, abcd 같은 쉬운 패턴은 사용할 수 없습니다.';
+
+            return {
+                lenOk,
+                mixOk,
+                uniqOk,
+                notEasy,
+                valid: lenOk && mixOk && uniqOk && notEasy,
+                reason
+            };
+        }
+
+        function onRegisterInputChange() {
+            const nameInput = document.getElementById('reg-name-input');
+            const pinInput = document.getElementById('reg-pin-input');
+            const nameStatus = document.getElementById('reg-name-status');
+            const name = nameInput.value;
+            const pw = pinInput.value;
+            const completeNickRegex = /^[a-zA-Z0-9가-힣_.]{2,12}$/;
+
+            if (!name) {
+                nameStatus.textContent = '2~12자 한글, 영문, 숫자, 밑줄(_), 마침표(.)만 가능 (띄어쓰기 불가)';
+                nameStatus.className = 'mt-1.5 text-[11px] font-semibold text-muted';
+                nameInput.classList.remove('border-rose-500', 'border-emerald-500');
+            } else if (!completeNickRegex.test(name)) {
+                nameStatus.textContent = '⚠️ 완성된 한글, 영문, 숫자, _, . 조합으로 2~12자 입력해 주세요.';
+                nameStatus.className = 'mt-1.5 text-[11px] font-bold text-amber-400';
+                nameInput.classList.remove('border-rose-500', 'border-emerald-500');
+            } else if (isDuplicateNickname(name)) {
+                nameStatus.textContent = '❌ 이미 사용 중인 닉네임입니다. 다른 닉네임을 입력해 주세요!';
+                nameStatus.className = 'mt-1.5 text-[11px] font-extrabold text-rose-400';
+                nameInput.classList.add('border-rose-500');
+                nameInput.classList.remove('border-emerald-500');
+            } else {
+                nameStatus.textContent = '✔ 사용 가능한 영재 닉네임입니다.';
+                nameStatus.className = 'mt-1.5 text-[11px] font-bold text-emerald-400';
+                nameInput.classList.add('border-emerald-500');
+                nameInput.classList.remove('border-rose-500');
+            }
+
+            const res = isValidStrongPassword(pw, name);
+            const setRule = (id, ok, text) => {
+                const el = document.getElementById(id);
+                el.textContent = (ok ? '✔ ' : '○ ') + text;
+                el.className = ok
+                    ? 'bg-emerald-500/15 border border-emerald-500/40 px-2 py-1 rounded-lg text-emerald-400 font-extrabold'
+                    : 'sub-box border px-2 py-1 rounded-lg text-muted';
+            };
+            setRule('pw-rule-len', res.lenOk, '4~20자');
+            setRule('pw-rule-mix', res.mixOk, '영문+숫자');
+            setRule('pw-rule-uniq', res.uniqOk, '4종류 이상 문자');
+            setRule('pw-rule-easy', res.notEasy, '반복/쉬운패턴 제외');
+
+            const strengthEl = document.getElementById('pw-strength-label');
+            if (!pw) {
+                strengthEl.textContent = '입력 대기';
+                strengthEl.className = 'text-[10px] font-extrabold text-muted';
+            } else if (!res.valid) {
+                strengthEl.textContent = `⚠️ 너무 쉬움 (${res.reason})`;
+                strengthEl.className = 'text-[10px] font-extrabold text-rose-400';
+            } else {
+                strengthEl.textContent = pw.length >= 8 ? '🛡️ 매우 안전함' : '✔ 안전함';
+                strengthEl.className = 'text-[10px] font-extrabold text-emerald-400';
+            }
+        }
+
+        function submitLogin() {
+            const name = document.getElementById('login-name-input').value.trim();
+            const pin = document.getElementById('login-pin-input').value.trim();
+            if (!name) return showToast('계정 닉네임을 입력해 주세요.');
+            if (!pin) return showToast('비밀번호를 입력해 주세요.');
+
+            const acc = accountsList.find(a => a.name.trim().toLowerCase() === name.toLowerCase());
+            if (!acc) {
+                Sound.wrong();
+                return showToast('❌ 존재하지 않는 닉네임입니다. 새 계정을 만들어 보세요!');
+            }
+            if (acc.pin !== pin) {
+                Sound.wrong();
+                return showToast('❌ 비밀번호가 일치하지 않습니다!');
+            }
+            enterLobbyWithAccount(acc);
+        }
+
+        function submitRegister() {
+            const nameInput = document.getElementById('reg-name-input');
+            const pinInput = document.getElementById('reg-pin-input');
+            sanitizeNicknameInput(nameInput, true);
+            const name = nameInput.value;
+            const pin = pinInput.value;
+
+            if (!/^[a-zA-Z0-9가-힣_.]{2,12}$/.test(name)) {
+                Sound.wrong();
+                nameInput.focus();
+                return showToast('⚠️ 닉네임은 띄어쓰기 없이 한글·영문·숫자·_·. 조합 2~12자만 가능합니다.');
+            }
+            if (isDuplicateNickname(name)) {
+                Sound.wrong();
+                nameInput.classList.remove('screen-shake');
+                void nameInput.offsetWidth;
+                nameInput.classList.add('screen-shake');
+                nameInput.focus();
+                return showToast('❌ 이미 사용 중인 닉네임입니다! 다른 닉네임으로 입력해 주세요.');
+            }
+
+            const pwCheck = isValidStrongPassword(pin, name);
+            if (!pwCheck.valid) {
+                Sound.wrong();
+                pinInput.value = '';
+                onRegisterInputChange();
+                pinInput.classList.remove('screen-shake');
+                void pinInput.offsetWidth;
+                pinInput.classList.add('screen-shake');
+                pinInput.focus();
+                return showToast(`⚠️ 비밀번호가 너무 쉽습니다! (${pwCheck.reason})`);
+            }
+
+            const newAcc = {
+                id: 'acc_' + Date.now(),
+                name,
+                pin,
+                createdAt: getTodayStr()
+            };
+            accountsList.push(newAcc);
+            saveAccountsRegistry();
+
+            currentAccount = newAcc;
+            state = JSON.parse(JSON.stringify(DEFAULT_USER_DATA));
+            saveState();
+
+            nameInput.value = '';
+            pinInput.value = '';
+            onRegisterInputChange();
+            Sound.levelup();
+            enterLobbyWithAccount(newAcc);
+            showToast(`✨ 환영합니다, ${name}님! 계정이 생성되었습니다.`);
+        }
+
+        function enterLobbyWithAccount(acc) {
+            currentAccount = acc;
+            localStorage.setItem(ACTIVE_USER_KEY, acc.id);
+            loadAccountVault(acc.id);
+            saveState();
+
+            document.getElementById('screen-auth').classList.add('hidden');
+            document.getElementById('screen-lobby').classList.remove('hidden');
+            updateLobbyUI();
+        }
+
+        function logoutAccount() {
+            saveState();
+            localStorage.removeItem(ACTIVE_USER_KEY);
+            currentAccount = null;
+            Sound.click();
+            showToast('🚪 안전하게 로그아웃되었습니다. 데이터는 보존됩니다.');
+            openAuthScreen();
+        }
+
+        /* ==========================================================================
+           [8] 테마 / 소리 / 진동 설정 UI
+           ========================================================================== */
+        function applyTheme(theme) {
+            const isLight = theme === 'light';
+            document.body.classList.toggle('theme-light', isLight);
+
+            const p1 = document.getElementById('pen-btn-1');
+            if (p1) {
+                if (isLight) {
+                    p1.style.backgroundColor = '#0f172a';
+                    p1.setAttribute('onclick', "setPenColor('#0f172a', this)");
+                    if (sp.color === '#fde047') sp.color = '#0f172a';
+                } else {
+                    p1.style.backgroundColor = '#fde047';
+                    p1.setAttribute('onclick', "setPenColor('#fde047', this)");
+                    if (sp.color === '#0f172a') sp.color = '#fde047';
+                }
+            }
+            const spTitle = document.getElementById('sp-board-title');
+            if (spTitle) {
+                spTitle.textContent = isLight ? '✏️ 화이트보드 연습장' : '✏️ 투명 칠판 연습장';
+            }
+        }
+
+        function openSettingsModal() {
+            Sound.click();
+            document.getElementById('settings-acc-name').textContent = currentAccount ? currentAccount.name : '모험가';
+            syncSettingsUI();
+            document.getElementById('modal-settings').classList.remove('hidden');
+        }
+
+        function closeSettingsModal() {
+            Sound.click();
+            document.getElementById('modal-settings').classList.add('hidden');
+        }
+
+        function syncSettingsUI() {
+            const isDark = state.settings.theme !== 'light';
+            document.getElementById('opt-theme-dark').className = isDark
+                ? 'px-2.5 py-1 rounded-lg text-xs font-extrabold bg-indigo-600 text-white'
+                : 'px-2.5 py-1 rounded-lg text-xs font-extrabold text-muted';
+            document.getElementById('opt-theme-light').className = !isDark
+                ? 'px-2.5 py-1 rounded-lg text-xs font-extrabold bg-amber-400 text-slate-950'
+                : 'px-2.5 py-1 rounded-lg text-xs font-extrabold text-muted';
+
+            const sBtn = document.getElementById('opt-sound-btn');
+            sBtn.textContent = state.settings.sound ? '켜짐 (ON)' : '꺼짐 (OFF)';
+            sBtn.className = state.settings.sound
+                ? 'px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-emerald-600 text-white'
+                : 'px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-slate-600 text-slate-200';
+
+            const vBtn = document.getElementById('opt-vibe-btn');
+            vBtn.textContent = state.settings.vibe ? '켜짐 (ON)' : '꺼짐 (OFF)';
+            vBtn.className = state.settings.vibe
+                ? 'px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-emerald-600 text-white'
+                : 'px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-slate-600 text-slate-200';
+        }
+
+        function setTheme(theme) {
+            state.settings.theme = theme;
+            applyTheme(theme);
+            saveState();
+            syncSettingsUI();
+            Sound.click();
+            showToast(theme === 'light' ? '☀️ 밝은 테마(라이트 모드) 적용됨' : '🌙 어두운 테마(다크 모드) 적용됨');
+        }
+
+        function toggleSoundSetting() {
+            state.settings.sound = !state.settings.sound;
+            saveState();
+            syncSettingsUI();
+            if (state.settings.sound) Sound.click();
+            showToast(state.settings.sound ? '🔊 효과음 켜짐' : '🔇 효과음 꺼짐');
+        }
+
+        function toggleVibeSetting() {
+            state.settings.vibe = !state.settings.vibe;
+            saveState();
+            syncSettingsUI();
+            if (state.settings.vibe) triggerVibe(40);
+            showToast(state.settings.vibe ? '📳 진동 피드백 켜짐' : '📴 진동 피드백 꺼짐');
+        }
+
+        /* ==========================================================================
+           [9] 날짜 유틸리티 & 플레이어 스탯 계산
+           ========================================================================== */
+        function getTodayStr() {
+            const d = new Date();
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        }
+
+        function getYesterdayStr() {
+            const d = new Date();
+            d.setDate(d.getDate() - 1);
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        }
+
+        function getEquippedPet() {
+            return PETS.find(p => p.id === state.equippedPet) || PETS[0];
+        }
+
+        function getStats() {
+            const tier = getCurrentTier();
+            const pet = getEquippedPet();
+            const baseAtk = 30 + (state.upgrades.atk - 1) * 8;
+            return {
+                atk: Math.round(baseAtk * tier.atkMult * (1 + pet.atkBonus)),
+                maxHp: 100 + (state.upgrades.hp - 1) * 20,
+                maxMp: 100,
+                goldMult: Number(((1 + (state.upgrades.gold - 1) * 0.15) * tier.goldMult * (1 + pet.goldBonus)).toFixed(2)),
+                critRate: 0.10 + (state.upgrades.crit - 1) * 0.05
+            };
+        }
+
+        function showToast(msg) {
+            const el = document.getElementById('toast-msg');
+            el.textContent = msg;
+            el.classList.remove('hidden');
+            clearTimeout(window._toastTimer);
+            window._toastTimer = setTimeout(() => el.classList.add('hidden'), 2400);
+        }
+
+        /* ==========================================================================
+           [10] 로비 UI 렌더링 & 4대 역량 SVG 레이더 차트
+           ========================================================================== */
+        function switchTab(tab) {
+            Sound.click();
+            ['dungeon', 'lab', 'notes', 'analysis'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== tab);
+                const btn = document.getElementById(`nav-btn-${t}`);
+                btn.className = t === tab
+                    ? 'relative py-2.5 rounded-2xl bg-indigo-600/15 border border-indigo-500/40 text-indigo-400 font-bold text-[11px] transition-all'
+                    : 'relative py-2.5 rounded-2xl sub-box border text-muted font-bold text-[11px] transition-all';
+            });
+            if (tab === 'analysis') renderRadarChart();
+        }
+
+        function switchNoteSubTab(sub) {
+            Sound.click();
+            document.getElementById('subtab-revenge').classList.toggle('hidden', sub !== 'revenge');
+            document.getElementById('subtab-gallery').classList.toggle('hidden', sub !== 'gallery');
+            document.getElementById('subtab-btn-revenge').className = sub === 'revenge'
+                ? 'py-1.5 rounded-lg bg-rose-600 text-white text-xs font-extrabold'
+                : 'py-1.5 rounded-lg text-muted text-xs font-extrabold';
+            document.getElementById('subtab-btn-gallery').className = sub === 'gallery'
+                ? 'py-1.5 rounded-lg bg-amber-500 text-slate-950 text-xs font-extrabold'
+                : 'py-1.5 rounded-lg text-muted text-xs font-extrabold';
+        }
+
+        function updateLobbyUI() {
+            const tier = getCurrentTier();
+            const nextTier = getNextTier();
+            const pet = getEquippedPet();
+
+            document.getElementById('ui-user-name').textContent = currentAccount ? currentAccount.name : '모험가';
+            const badgeEl = document.getElementById('ui-tier-badge');
+            badgeEl.textContent = tier.name;
+            badgeEl.className = `px-2 py-1 rounded-xl bg-gradient-to-r ${tier.badgeBg} font-game text-[11px] shadow shrink-0`;
+
+            document.getElementById('ui-active-pet-badge').textContent = pet.icon;
+            document.getElementById('ui-gold').textContent = state.gold.toLocaleString();
+            document.getElementById('ui-gem').textContent = state.gem.toLocaleString();
+            document.getElementById('ui-tier-atk').textContent = `${tier.atkMult.toFixed(2)}x`;
+            document.getElementById('ui-tier-gold').textContent = `${tier.goldMult.toFixed(2)}x`;
+
+            if (nextTier) {
+                const range = nextTier.minXp - tier.minXp;
+                const progress = state.tierXp - tier.minXp;
+                const pct = Math.min(100, Math.round((progress / range) * 100));
+                document.getElementById('ui-tier-xp-text').textContent = `${state.tierXp} / ${nextTier.minXp} XP`;
+                document.getElementById('ui-tier-bar').style.width = `${pct}%`;
+            } else {
+                document.getElementById('ui-tier-xp-text').textContent = `${state.tierXp} XP (최고 영재 달성!)`;
+                document.getElementById('ui-tier-bar').style.width = '100%';
+            }
+
+            const today = getTodayStr();
+            document.getElementById('checkin-dot').classList.toggle('hidden', state.checkin.lastDate === today);
+
+            const resumeBanner = document.getElementById('resume-banner');
+            if (state.activeRun && state.activeRun.queue && state.activeRun.index < state.activeRun.queue.length) {
+                const run = state.activeRun;
+                const chObj = CHAPTERS.find(c => c.id === run.mode);
+                const title = chObj ? chObj.title : '오답 복수전';
+                document.getElementById('resume-title').textContent = `${title} (Stage ${run.index + 1}/${run.queue.length})`;
+                document.getElementById('resume-relics').textContent = `유물 ${run.relics.length}개 보유 · HP ${run.playerHp}/${run.playerMaxHp}`;
+                resumeBanner.classList.remove('hidden');
+            } else {
+                resumeBanner.classList.add('hidden');
+            }
+
+            // 1. 챕터 리스트
+            const chContainer = document.getElementById('chapter-list');
+            chContainer.innerHTML = CHAPTERS.map(ch => {
+                const cleared = state.clearedChapters.includes(ch.id);
+                return `
+                    <div class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3 hover:border-indigo-400/40 transition-all">
+                        <div class="space-y-1.5 min-w-0">
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-md bg-gradient-to-r ${ch.color} text-white shadow-sm">${ch.badge}</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-md sub-box border text-cyan-400">+${ch.gem} 💎</span>
+                                ${cleared ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-400 border border-emerald-500/25">✔ 정복완료</span>' : ''}
+                            </div>
+                            <h3 class="text-sm font-extrabold text-main truncate">${ch.title}</h3>
+                            <p class="text-[11px] text-muted leading-snug">${ch.desc}</p>
+                        </div>
+                        <button onclick="startBattle('${ch.id}', true)" class="btn-3d bg-gradient-to-r ${ch.color} text-white font-bold text-xs px-4 py-3 rounded-2xl shrink-0">
+                            출격 ▶
+                        </button>
+                    </div>
+                `;
+            }).join('');
+
+            // 2. 스탯 연구소
+            const upItems = [
+                { key: 'atk', icon: '⚔️', name: '논리 공격력 강화', desc: `기본 공격 +8 (현재 ${getStats().atk})` },
+                { key: 'hp', icon: '❤️', name: '멘탈 체력 강화', desc: `최대 HP +20 (현재 ${getStats().maxHp})` },
+                { key: 'gold', icon: '🪙', name: '탐구 보상 증폭', desc: `골드 배율 +15% (현재 ${getStats().goldMult}x)` },
+                { key: 'crit', icon: '💥', name: '통찰 치명타율', desc: `치명타 확률 +5% (현재 ${Math.round(getStats().critRate * 100)}%)` }
+            ];
+            document.getElementById('lab-list').innerHTML = upItems.map(u => {
+                const lv = state.upgrades[u.key];
+                const cost = lv * 100;
+                return `
+                    <div class="glass-card rounded-2xl p-3 flex items-center justify-between">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-10 h-10 rounded-xl sub-box border flex items-center justify-center text-xl">${u.icon}</div>
+                            <div>
+                                <div class="text-xs font-extrabold text-main">${u.name} <span class="text-amber-500">Lv.${lv}</span></div>
+                                <div class="text-[11px] text-muted">${u.desc}</div>
+                            </div>
+                        </div>
+                        <button onclick="buyUpgrade('${u.key}')" ${state.gold < cost ? 'disabled' : ''} class="btn-3d bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-extrabold text-xs px-3 py-2 rounded-xl shrink-0">
+                            🪙 ${cost}
+                        </button>
+                    </div>
+                `;
+            }).join('');
+
+            // 2-2. 파트너 펫 목록
+            document.getElementById('pet-list').innerHTML = PETS.map(p => {
+                const owned = state.ownedPets.includes(p.id);
+                const equipped = state.equippedPet === p.id;
+                return `
+                    <div class="sub-box border ${equipped ? 'border-cyan-400' : ''} rounded-xl p-2.5 flex flex-col justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="text-2xl">${p.icon}</span>
+                            <div class="min-w-0">
+                                <div class="text-[11px] font-extrabold text-main truncate">${p.name}</div>
+                                <div class="text-[10px] text-cyan-500">${p.bonus}</div>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            ${equipped
+                                ? `<div class="w-full py-1 rounded-lg bg-cyan-500/20 text-cyan-500 text-center text-[10px] font-black">✔ 장착 중</div>`
+                                : owned
+                                    ? `<button onclick="equipPet('${p.id}')" class="w-full py-1 rounded-lg bg-indigo-600 text-white text-[10px] font-bold">장착하기</button>`
+                                    : `<div class="w-full py-1 rounded-lg border text-muted text-center text-[10px]">미보유 (소환 획득)</div>`
+                            }
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // 3. 오답 노트 & 비밀 풀이노트
+            document.getElementById('wrong-count-badge').textContent = state.wrongNotes.length;
+            document.getElementById('nav-notes-dot').classList.toggle('hidden', state.wrongNotes.length === 0);
+            document.getElementById('btn-start-revenge').disabled = state.wrongNotes.length === 0;
+
+            const wrongEl = document.getElementById('wrong-list');
+            if (state.wrongNotes.length === 0) {
+                wrongEl.innerHTML = `<div class="glass-card rounded-2xl p-6 text-center text-xs text-muted">현재 틀린 문제가 없습니다! 완벽한 영재입니다 ✨</div>`;
+            } else {
+                wrongEl.innerHTML = state.wrongNotes.map(qId => {
+                    const q = QUESTIONS.find(item => item.id === qId);
+                    if (!q) return '';
+                    return `
+                        <div class="glass-card rounded-2xl p-3 border-l-4 border-l-rose-500">
+                            <div class="text-[10px] font-bold text-rose-500 mb-0.5">${q.tag}</div>
+                            <div class="text-xs font-bold text-main mb-1.5">${q.q}</div>
+                            <div class="text-[11px] text-emerald-500 font-bold">정답: ${q.options[q.ans]}</div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            document.getElementById('saved-note-count').textContent = state.savedNotes.length;
+            const savedEl = document.getElementById('saved-notes-list');
+            if (state.savedNotes.length === 0) {
+                savedEl.innerHTML = `<div class="glass-card rounded-2xl p-6 text-center text-xs text-muted">아직 저장된 연습장 풀이가 없습니다.<br>전투 중 연습장에서 [📸 노트 저장]을 눌러보세요!</div>`;
+            } else {
+                savedEl.innerHTML = state.savedNotes.map((note, idx) => `
+                    <div class="glass-card rounded-2xl p-3 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-black text-amber-500">${note.tag} · ${note.date}</span>
+                            <button onclick="deleteSavedNote(${idx})" class="text-[10px] text-rose-500 font-bold">삭제 ✕</button>
+                        </div>
+                        <div class="text-xs font-bold text-main">${note.q}</div>
+                        <img src="${note.img}" alt="저장된 풀이 노트" class="w-full rounded-xl border border-slate-600/40 bg-slate-950" />
+                    </div>
+                `).join('');
+            }
+
+            // 4. 티어 승급표
+            document.getElementById('tier-table').innerHTML = TIERS.map(t => {
+                const isCurrent = t.id === tier.id;
+                return `
+                    <div class="flex items-center justify-between px-3 py-2 rounded-xl border ${isCurrent ? 'bg-indigo-600/20 border-indigo-400 text-main font-bold' : 'sub-box text-muted'}">
+                        <span>${t.name} (${t.minXp} XP~)</span>
+                        <span>공격 ${t.atkMult}x · 코인 ${t.goldMult}x</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderRadarChart() {
+            const cats = [
+                { key: 'logic',    label: '수리논리', angle: -Math.PI / 2 },
+                { key: 'geometry', label: '공간기하', angle: 0 },
+                { key: 'science',  label: '과학탐구', angle: Math.PI / 2 },
+                { key: 'fusion',   label: '영재융합', angle: Math.PI }
+            ];
+            const cx = 120, cy = 100, maxR = 62;
+            const scores = cats.map(c => {
+                const st = state.categoryStats[c.key] || { correct: 0, total: 0 };
+                const rate = st.total > 0 ? Math.round((st.correct / st.total) * 100) : 0;
+                return { ...c, rate, total: st.total, correct: st.correct };
+            });
+
+            const totalSolved = scores.reduce((acc, s) => acc + s.total, 0);
+            document.getElementById('analysis-total-solved').textContent = `누적 ${totalSolved}문제 풀이`;
+
+            let gridSvg = '';
+            [0.33, 0.66, 1.0].forEach(scale => {
+                const pts = cats.map(c => `${cx + Math.cos(c.angle) * maxR * scale},${cy + Math.sin(c.angle) * maxR * scale}`).join(' ');
+                gridSvg += `<polygon points="${pts}" fill="none" stroke="rgba(148,163,184,0.35)" stroke-width="1" />`;
+            });
+            cats.forEach(c => {
+                gridSvg += `<line x1="${cx}" y1="${cy}" x2="${cx + Math.cos(c.angle) * maxR}" y2="${cy + Math.sin(c.angle) * maxR}" stroke="rgba(148,163,184,0.3)" stroke-width="1" />`;
+            });
+
+            const dataPts = scores.map(s => {
+                const r = Math.max(8, (s.rate / 100) * maxR);
+                return `${cx + Math.cos(s.angle) * r},${cy + Math.sin(s.angle) * r}`;
+            }).join(' ');
+
+            const labelsSvg = scores.map(s => {
+                const lx = cx + Math.cos(s.angle) * (maxR + 24);
+                const ly = cy + Math.sin(s.angle) * (maxR + 18) + 4;
+                return `<text x="${lx}" y="${ly}" text-anchor="middle" fill="currentColor" font-size="11" font-weight="800">${s.label}</text>`;
+            }).join('');
+
+            document.getElementById('radar-svg').innerHTML = `
+                ${gridSvg}
+                <polygon points="${dataPts}" fill="rgba(56, 189, 248, 0.35)" stroke="#38bdf8" stroke-width="2.5" />
+                ${labelsSvg}
+            `;
+
+            document.getElementById('radar-bars').innerHTML = scores.map(s => `
+                <div class="flex items-center justify-between text-xs sub-box px-3 py-1.5 rounded-xl border">
+                    <span class="font-bold text-main">${s.label}</span>
+                    <span class="text-cyan-500 font-extrabold">${s.rate}% (${s.correct}/${s.total})</span>
+                </div>
+            `).join('');
+
+            const played = scores.filter(s => s.total > 0);
+            const weakBox = document.getElementById('weak-area-box');
+            if (played.length === 0) {
+                weakBox.innerHTML = '던전에 출격하여 문제를 풀면 4대 영재 역량과 취약 영역을 실시간 진단해 드립니다!';
+            } else {
+                const weakest = [...played].sort((a, b) => a.rate - b.rate)[0];
+                weakBox.innerHTML = `🔍 <b>영재 진단 리포트:</b> 현재 <b>[${weakest.label}]</b> 영역 정답률이 <b>${weakest.rate}%</b>로 가장 보완이 필요합니다. 해당 챕터 집중 수련을 추천합니다!`;
+            }
+        }
+
+        function buyUpgrade(key) {
+            const cost = state.upgrades[key] * 100;
+            if (state.gold < cost) return showToast('코인이 부족합니다!');
+            state.gold -= cost;
+            state.upgrades[key]++;
+            Sound.levelup();
+            saveState();
+            updateLobbyUI();
+            showToast('연구 강화 성공! 영구 능력치가 상승했습니다.');
+        }
+
+        function summonPet() {
+            if (state.gem < 15) return showToast('젬(💎)이 15개 필요합니다!');
+            state.gem -= 15;
+            const pool = PETS;
+            const picked = pool[Math.floor(Math.random() * pool.length)];
+            if (!state.ownedPets.includes(picked.id)) {
+                state.ownedPets.push(picked.id);
+                state.equippedPet = picked.id;
+                Sound.bossLoot();
+                showToast(`🎉 신규 파트너 [${picked.icon} ${picked.name}] 소환 및 장착!`);
+            } else {
+                state.gold += 150;
+                Sound.click();
+                showToast(`중복 파트너 [${picked.name}] → 150 코인으로 환급되었습니다!`);
+            }
+            saveState();
+            updateLobbyUI();
+        }
+
+        function equipPet(petId) {
+            state.equippedPet = petId;
+            Sound.click();
+            saveState();
+            updateLobbyUI();
+            showToast('파트너 펫을 교체 장착했습니다!');
+        }
+
+        function deleteSavedNote(idx) {
+            state.savedNotes.splice(idx, 1);
+            saveState();
+            updateLobbyUI();
+            showToast('저장된 풀이 노트를 삭제했습니다.');
+        }
+
+        /* ==========================================================================
+           [11] 7일 연속 일일 출석 시스템
+           ========================================================================== */
+        const CHECKIN_REWARDS = [
+            { day: 1, label: '100 G', gold: 100, gem: 0, xp: 30 },
+            { day: 2, label: '5 💎', gold: 0, gem: 5, xp: 40 },
+            { day: 3, label: '200 G', gold: 200, gem: 0, xp: 50 },
+            { day: 4, label: '8 💎', gold: 0, gem: 8, xp: 60 },
+            { day: 5, label: '350 G', gold: 350, gem: 0, xp: 80 },
+            { day: 6, label: '12 💎', gold: 0, gem: 12, xp: 100 },
+            { day: 7, label: '500G+20💎', gold: 500, gem: 20, xp: 150 }
+        ];
+
+        function openCheckinModal() {
+            Sound.click();
+            const today = getTodayStr();
+            const yesterday = getYesterdayStr();
+            let effectiveStreak = state.checkin.streak;
+            if (state.checkin.lastDate && state.checkin.lastDate !== today && state.checkin.lastDate !== yesterday) {
+                effectiveStreak = 0;
+            }
+            const claimedToday = state.checkin.lastDate === today;
+            const nextDayNum = claimedToday ? effectiveStreak : (effectiveStreak % 7) + 1;
+
+            document.getElementById('checkin-grid').innerHTML = CHECKIN_REWARDS.map(r => {
+                const isDone = claimedToday ? r.day <= effectiveStreak : r.day < nextDayNum;
+                const isTodayTarget = !claimedToday && r.day === nextDayNum;
+                return `
+                    <div class="rounded-xl p-2 border text-center ${isTodayTarget ? 'bg-amber-500/20 border-amber-400 animate-pulse' : isDone ? 'bg-emerald-500/15 border-emerald-500/40' : 'sub-box'}">
+                        <div class="text-[10px] font-black text-muted">${r.day}일차</div>
+                        <div class="text-xs font-extrabold text-main my-1">${r.label}</div>
+                        <div class="text-[10px] font-bold ${isDone ? 'text-emerald-500' : isTodayTarget ? 'text-amber-500' : 'text-muted'}">
+                            ${isDone ? '✔ 완료' : isTodayTarget ? '오늘!' : '대기'}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            const btn = document.getElementById('btn-claim-checkin');
+            btn.disabled = claimedToday;
+            btn.textContent = claimedToday ? '오늘 출석 보상 수령 완료 ✔' : `${nextDayNum}일차 출석 보상 받기!`;
+            document.getElementById('modal-checkin').classList.remove('hidden');
+        }
+
+        function claimDailyCheckin() {
+            const today = getTodayStr();
+            if (state.checkin.lastDate === today) return;
+
+            const yesterday = getYesterdayStr();
+            const newStreak = (state.checkin.lastDate === yesterday) ? (state.checkin.streak % 7) + 1 : 1;
+            const reward = CHECKIN_REWARDS[newStreak - 1];
+
+            state.checkin.lastDate = today;
+            state.checkin.streak = newStreak;
+            state.gold += reward.gold;
+            state.gem += reward.gem;
+            gainTierXp(reward.xp);
+
+            Sound.bossLoot();
+            saveState();
+            updateLobbyUI();
+            openCheckinModal();
+            showToast(`🎉 ${newStreak}일차 출석 완료! (${reward.label} + ${reward.xp} XP)`);
+        }
+
+        function gainTierXp(amount) {
+            const oldTier = getCurrentTier();
+            state.tierXp += amount;
+            const newTier = getCurrentTier();
+            if (newTier.id > oldTier.id) {
+                Sound.levelup();
+                setTimeout(() => showToast(`🎊 티어 승급! [${newTier.name}] 달성! 영구 배율 상승!`), 400);
+            }
+        }
+
+        /* ==========================================================================
+           [12] 던전 진행 상태 자동 저장 / 이어하기 & 스마트 타이머
+           ========================================================================== */
+        let battle = {
+            mode: 'CH1',
+            queue: [],
+            index: 0,
+            playerHp: 100,
+            playerMaxHp: 100,
+            playerMp: 100,
+            playerMaxMp: 100,
+            enemyHp: 100,
+            enemyMaxHp: 100,
+            isBossStage: false,
+            bossPhase2: false,
+            kwSelected: [],
+            combo: 0,
+            correctCount: 0,
+            earnedGold: 0,
+            earnedGem: 0,
+            earnedXp: 0,
+            powerBuff: false,
+            shieldBuff: false,
+            relics: [],
+            locked: false,
+            currentShuffled: [],
+            currentCorrectIdx: 0,
+            timerLeft: 25,
+            timerMax: 25,
+            timerInterval: null
+        };
+
+        function persistActiveRun() {
+            if (!battle.queue || battle.index >= battle.queue.length) {
+                state.activeRun = null;
+            } else {
+                state.activeRun = {
+                    mode: battle.mode,
+                    queue: battle.queue,
+                    index: battle.index,
+                    playerHp: battle.playerHp,
+                    playerMaxHp: battle.playerMaxHp,
+                    playerMp: battle.playerMp,
+                    playerMaxMp: battle.playerMaxMp,
+                    combo: battle.combo,
+                    correctCount: battle.correctCount,
+                    earnedGold: battle.earnedGold,
+                    earnedGem: battle.earnedGem,
+                    earnedXp: battle.earnedXp,
+                    shieldBuff: battle.shieldBuff,
+                    relics: battle.relics
+                };
+            }
+            saveState();
+        }
+
+        function exitBattleAndSave() {
+            stopSmartTimer();
+            persistActiveRun();
+            Sound.click();
+            document.getElementById('screen-battle').classList.add('hidden');
+            document.getElementById('screen-lobby').classList.remove('hidden');
+            updateLobbyUI();
+            showToast('💾 현재 스테이지와 유물이 자동 저장되었습니다!');
+        }
+
+        function abandonSavedRun() {
+            state.activeRun = null;
+            saveState();
+            updateLobbyUI();
+            showToast('저장된 던전 진행 기록을 초기화했습니다.');
+        }
+
+        function resumeSavedRun() {
+            if (!state.activeRun) return;
+            Sound.click();
+            const saved = state.activeRun;
+            battle = {
+                ...battle,
+                ...saved,
+                bossPhase2: false,
+                kwSelected: [],
+                powerBuff: false,
+                locked: false
+            };
+            document.getElementById('screen-lobby').classList.add('hidden');
+            document.getElementById('screen-battle').classList.remove('hidden');
+            const chObj = CHAPTERS.find(c => c.id === battle.mode);
+            document.getElementById('battle-title').textContent = chObj ? chObj.title : '🔥 오답 복수전';
+            loadStage(false);
+        }
+
+        function startBattle(mode, isFresh = true) {
+            Sound.click();
+            const stats = getStats();
+            let qList = [];
+            if (mode === 'REVENGE') {
+                qList = [...state.wrongNotes];
+                if (qList.length === 0) return showToast('복수할 오답 문제가 없습니다!');
+                document.getElementById('battle-title').textContent = '🔥 현상수배 오답 복수전';
+            } else {
+                const ch = CHAPTERS.find(c => c.id === mode);
+                qList = QUESTIONS.filter(q => q.ch === mode).map(q => q.id);
+                document.getElementById('battle-title').textContent = ch.title;
+            }
+
+            battle = {
+                mode,
+                queue: qList,
+                index: 0,
+                playerHp: stats.maxHp,
+                playerMaxHp: stats.maxHp,
+                playerMp: stats.maxMp,
+                playerMaxMp: stats.maxMp,
+                enemyHp: 100,
+                enemyMaxHp: 100,
+                isBossStage: false,
+                bossPhase2: false,
+                kwSelected: [],
+                combo: 0,
+                correctCount: 0,
+                earnedGold: 0,
+                earnedGem: 0,
+                earnedXp: 0,
+                powerBuff: false,
+                shieldBuff: false,
+                relics: [],
+                locked: false,
+                currentShuffled: [],
+                currentCorrectIdx: 0,
+                timerLeft: 25,
+                timerMax: 25,
+                timerInterval: null
+            };
+
+            persistActiveRun();
+            document.getElementById('screen-lobby').classList.add('hidden');
+            document.getElementById('screen-battle').classList.remove('hidden');
+            loadStage(true);
+        }
+
+        function startSmartTimer(qObj) {
+            stopSmartTimer();
+            const hasEdison = battle.relics.includes('edison');
+            const baseSec = (qObj.type === 'calc' ? 40 : 22) + (hasEdison ? 5 : 0);
+            battle.timerMax = baseSec;
+            battle.timerLeft = baseSec;
+            updateTimerBadge();
+
+            battle.timerInterval = setInterval(() => {
+                if (battle.locked || !document.getElementById('scratchpad-overlay').classList.contains('hidden')) return;
+                battle.timerLeft = Math.max(0, +(battle.timerLeft - 0.5).toFixed(1));
+                updateTimerBadge();
+                if (battle.timerLeft <= 0) {
+                    stopSmartTimer();
+                }
+            }, 500);
+        }
+
+        function stopSmartTimer() {
+            if (battle.timerInterval) {
+                clearInterval(battle.timerInterval);
+                battle.timerInterval = null;
+            }
+        }
+
+        function updateTimerBadge() {
+            const el = document.getElementById('smart-timer-badge');
+            if (battle.timerLeft > 0) {
+                el.textContent = `⏱️ 보너스 ${battle.timerLeft.toFixed(0)}s`;
+                el.className = 'text-[10px] font-black px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-400 border border-cyan-500/40';
+            } else {
+                el.textContent = '⏱️ 기본 보상';
+                el.className = 'text-[10px] font-bold px-2 py-0.5 rounded sub-box text-muted border';
+            }
+        }
+
+        function loadStage(isInitial = false) {
+            clearScratchpad(false);
+            battle.locked = false;
+            battle.powerBuff = false;
+            battle.bossPhase2 = false;
+            battle.kwSelected = [];
+
+            document.getElementById('choices-box').classList.remove('hidden');
+            document.getElementById('boss-keyword-box').classList.add('hidden');
+            document.getElementById('battle-pet-float').textContent = getEquippedPet().icon;
+
+            const qId = battle.queue[battle.index];
+            const qObj = QUESTIONS.find(q => q.id === qId);
+            const chObj = CHAPTERS.find(c => c.id === battle.mode);
+
+            battle.isBossStage = (battle.mode !== 'REVENGE' && battle.index === battle.queue.length - 1);
+
+            const baseEnemyHp = 80 + battle.index * 15;
+            battle.enemyMaxHp = battle.isBossStage ? Math.round(baseEnemyHp * 1.4) : baseEnemyHp;
+            battle.enemyHp = battle.enemyMaxHp;
+
+            const svgKey = battle.isBossStage ? 'boss' : (chObj ? chObj.svg : 'prism');
+            const mSvgEl = document.getElementById('monster-svg');
+            mSvgEl.innerHTML = MONSTER_SVGS[svgKey];
+            mSvgEl.classList.toggle('boss-aura', battle.isBossStage);
+
+            document.getElementById('boss-crown-badge').classList.toggle('hidden', !battle.isBossStage);
+            document.getElementById('enemy-name').textContent = battle.isBossStage
+                ? `[BOSS] ${chObj.badge} 수호군주`
+                : `${qObj.tag.split('·')[1] || '지식'} 몬스터 Lv.${battle.index + 1}`;
+
+            document.getElementById('battle-stage').textContent = battle.index + 1;
+            document.getElementById('battle-total').textContent = battle.queue.length;
+            document.getElementById('q-tag').textContent = qObj.tag;
+            document.getElementById('q-text').textContent = qObj.q;
+
+            const indexed = qObj.options.map((text, idx) => ({ text, isCorrect: idx === qObj.ans }));
+            for (let i = indexed.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [indexed[i], indexed[j]] = [indexed[j], indexed[i]];
+            }
+            battle.currentShuffled = indexed;
+            battle.currentCorrectIdx = indexed.findIndex(item => item.isCorrect);
+
+            const labels = ['A', 'B', 'C', 'D'];
+            document.getElementById('choices-box').innerHTML = indexed.map((opt, idx) => `
+                <button onclick="handleAnswer(${idx})" id="choice-${idx}" class="choice-btn w-full text-left px-3.5 py-3 rounded-2xl flex items-center gap-3">
+                    <span class="w-6 h-6 rounded-lg bg-indigo-500/15 border border-indigo-500/30 text-indigo-400 font-extrabold text-xs flex items-center justify-center shrink-0">${labels[idx]}</span>
+                    <span class="text-xs sm:text-sm font-semibold leading-snug break-keep">${opt.text}</span>
+                </button>
+            `).join('');
+
+            startSmartTimer(qObj);
+            updateBattleHUD();
+            persistActiveRun();
+        }
+
+        function updateBattleHUD() {
+            document.getElementById('enemy-hp').textContent = Math.max(0, battle.enemyHp);
+            document.getElementById('enemy-max-hp').textContent = battle.enemyMaxHp;
+            document.getElementById('enemy-hp-bar').style.width = `${Math.max(0, (battle.enemyHp / battle.enemyMaxHp) * 100)}%`;
+
+            document.getElementById('player-hp').textContent = Math.max(0, battle.playerHp);
+            document.getElementById('player-max-hp').textContent = battle.playerMaxHp;
+            document.getElementById('player-hp-bar').style.width = `${Math.max(0, (battle.playerHp / battle.playerMaxHp) * 100)}%`;
+
+            document.getElementById('player-mp').textContent = battle.playerMp;
+            document.getElementById('player-max-mp').textContent = battle.playerMaxMp;
+            document.getElementById('player-mp-bar').style.width = `${(battle.playerMp / battle.playerMaxMp) * 100}%`;
+
+            document.getElementById('battle-combo').textContent = battle.combo;
+
+            const isFever = battle.combo >= 3;
+            document.getElementById('fever-tag').classList.toggle('hidden', !isFever);
+            document.getElementById('arena-box').classList.toggle('fever-bg', isFever);
+
+            document.getElementById('buff-power-tag').classList.toggle('hidden', !battle.powerBuff);
+            document.getElementById('buff-shield-tag').classList.toggle('hidden', !battle.shieldBuff);
+
+            document.getElementById('active-relics-bar').innerHTML = battle.relics.map(rId => {
+                const r = RELICS.find(item => item.id === rId);
+                return r ? `<span class="text-[10px] sub-box border border-amber-400/50 px-1.5 py-0.5 rounded-full text-amber-500 font-bold" title="${r.name}: ${r.desc}">${r.icon} ${r.name.split(' ')[0]}</span>` : '';
+            }).join('');
+
+            const inBossPhase2 = battle.bossPhase2;
+            document.getElementById('btn-skill-erase').disabled = battle.locked || inBossPhase2 || battle.playerMp < 30;
+            document.getElementById('btn-skill-power').disabled = battle.locked || inBossPhase2 || battle.playerMp < 45 || battle.powerBuff;
+            document.getElementById('btn-skill-shield').disabled = battle.locked || inBossPhase2 || battle.playerMp < 40 || battle.shieldBuff;
+        }
+
+        function useSkill(type) {
+            if (battle.locked || battle.bossPhase2) return;
+            if (type === 'erase') {
+                if (battle.playerMp < 30) return;
+                const wrongIndices = [0, 1, 2, 3].filter(i => i !== battle.currentCorrectIdx && !document.getElementById(`choice-${i}`).disabled);
+                if (wrongIndices.length <= 1) return showToast('더 이상 소거할 오답이 없습니다!');
+                battle.playerMp -= 30;
+                const target = wrongIndices[Math.floor(Math.random() * wrongIndices.length)];
+                const btn = document.getElementById(`choice-${target}`);
+                btn.disabled = true;
+                btn.classList.add('opacity-25', 'line-through');
+                Sound.click();
+                showToast('💡 오답 소거 발동!');
+            } else if (type === 'power') {
+                if (battle.playerMp < 45 || battle.powerBuff) return;
+                battle.playerMp -= 45;
+                battle.powerBuff = true;
+                Sound.click();
+                showToast('⚡ 집중 강타 준비! 다음 정답 2.2배 피해!');
+            } else if (type === 'shield') {
+                if (battle.playerMp < 40 || battle.shieldBuff) return;
+                battle.playerMp -= 40;
+                battle.shieldBuff = true;
+                Sound.click();
+                showToast('🛡️ 논리 방어막 전개!');
+            }
+            updateBattleHUD();
+        }
+
+        function spawnDamagePopup(text, colorClass) {
+            const stage = document.getElementById('monster-stage');
+            const el = document.createElement('div');
+            el.className = `dmg-popup font-game text-2xl ${colorClass}`;
+            el.textContent = text;
+            stage.appendChild(el);
+            setTimeout(() => el.remove(), 880);
+        }
+
+        function triggerBossLootExplosion(bonusGold, bonusGem) {
+            Sound.bossLoot();
+            const arena = document.getElementById('arena-box');
+            const coins = ['🪙', '💰', '💎', '🪙', '✨', '🪙', '💎', '🪙', '💰', '✨'];
+            coins.forEach((icon, i) => {
+                const p = document.createElement('div');
+                p.className = 'coin-particle text-xl';
+                p.textContent = icon;
+                const angle = (Math.PI * 2 * i) / coins.length;
+                const dist = 55 + Math.random() * 45;
+                p.style.setProperty('--tx', `${Math.cos(angle) * dist}px`);
+                p.style.setProperty('--ty', `${Math.sin(angle) * dist - 20}px`);
+                arena.appendChild(p);
+                setTimeout(() => p.remove(), 1100);
+            });
+
+            const banner = document.createElement('div');
+            banner.className = 'boss-loot-banner bg-gradient-to-r from-amber-500 via-yellow-400 to-orange-500 text-slate-950 font-game text-xs px-3.5 py-1.5 rounded-full shadow-xl border border-white whitespace-nowrap';
+            banner.textContent = `👑 BOSS 격파! 3배 코인 (+${bonusGold}G) & +${bonusGem}💎!`;
+            arena.appendChild(banner);
+            setTimeout(() => banner.remove(), 2250);
+        }
+
+        function recordCategoryStat(catKey, isCorrect) {
+            if (!state.categoryStats[catKey]) state.categoryStats[catKey] = { correct: 0, total: 0 };
+            state.categoryStats[catKey].total++;
+            if (isCorrect) state.categoryStats[catKey].correct++;
+        }
+
+        function handleAnswer(selectedIdx) {
+            if (battle.locked) return;
+            battle.locked = true;
+            stopSmartTimer();
+
+            const qId = battle.queue[battle.index];
+            const qObj = QUESTIONS.find(q => q.id === qId);
+            const isCorrect = selectedIdx === battle.currentCorrectIdx;
+            const stats = getStats();
+
+            for (let i = 0; i < 4; i++) {
+                const btn = document.getElementById(`choice-${i}`);
+                btn.disabled = true;
+                if (i === battle.currentCorrectIdx) btn.classList.add('correct');
+                else if (i === selectedIdx && !isCorrect) btn.classList.add('wrong');
+            }
+
+            recordCategoryStat(qObj.cat, isCorrect);
+
+            if (isCorrect) {
+                battle.combo++;
+                battle.correctCount++;
+                const isFever = battle.combo >= 3;
+                const critChance = stats.critRate + (battle.relics.includes('archimedes') ? 0.20 : 0);
+                const isCrit = Math.random() < critChance;
+
+                let dmg = stats.atk * (1 + battle.combo * 0.1);
+                if (isFever) dmg *= 2;
+                if (battle.powerBuff) dmg *= 2.2;
+                if (isCrit) dmg *= 1.8;
+                if (battle.relics.includes('pythagoras') && (qObj.cat === 'logic' || qObj.cat === 'geometry')) dmg *= 1.4;
+                dmg = Math.round(dmg);
+
+                const finalDmg = Math.max(dmg, battle.enemyHp);
+                battle.enemyHp = Math.max(0, battle.enemyHp - finalDmg);
+
+                const mpGain = 15 + (battle.relics.includes('boyle') ? 20 : 0);
+                battle.playerMp = Math.min(battle.playerMaxMp, battle.playerMp + mpGain);
+
+                const speedBonus = battle.timerLeft > 0 ? 1.25 : 1.0;
+                const relicGoldMult = battle.relics.includes('alchemist') ? 1.35 : 1.0;
+                const modeMult = (battle.mode === 'REVENGE' ? 2 : 1) * (battle.isBossStage ? 3 : 1);
+                const goldGain = Math.round(25 * stats.goldMult * (isFever ? 2 : 1) * speedBonus * relicGoldMult * modeMult);
+                const xpGain = Math.round((battle.isBossStage ? 45 : 20) * speedBonus);
+
+                battle.earnedGold += goldGain;
+                battle.earnedXp += xpGain;
+                state.gold += goldGain;
+                gainTierXp(xpGain);
+
+                if (battle.mode === 'REVENGE') {
+                    state.wrongNotes = state.wrongNotes.filter(id => id !== qId);
+                    battle.earnedGem += 1;
+                    state.gem += 1;
+                }
+
+                Sound.hit(isCrit);
+                const mSvg = document.getElementById('monster-svg');
+                mSvg.classList.remove('monster-hit');
+                void mSvg.offsetWidth;
+                mSvg.classList.add('monster-hit');
+                spawnDamagePopup(isCrit ? `💥 CRITICAL -${finalDmg}!` : `⚔️ -${finalDmg}`, isCrit ? 'text-amber-300' : 'text-emerald-300');
+
+                if (battle.isBossStage) {
+                    const chObj = CHAPTERS.find(c => c.id === battle.mode);
+                    const bossGem = chObj ? chObj.gem : 15;
+                    battle.earnedGem += bossGem;
+                    state.gem += bossGem;
+                    triggerBossLootExplosion(goldGain, bossGem);
+                    updateBattleHUD();
+                    saveState();
+                    setTimeout(() => startBossKeywordFinisher(qObj), 900);
+                    return;
+                }
+
+                updateBattleHUD();
+                saveState();
+                setTimeout(() => openExplainModal(true, qObj.exp, speedBonus > 1 ? '⚡ 스마트 빠른 풀이 보너스 +25% 적용!' : ''), 550);
+
+            } else {
+                battle.combo = 0;
+                if (!state.wrongNotes.includes(qId)) state.wrongNotes.push(qId);
+
+                if (battle.shieldBuff) {
+                    battle.shieldBuff = false;
+                    Sound.click();
+                    spawnDamagePopup('🛡️ 논리 방어막 발동!', 'text-cyan-300');
+                } else {
+                    const dmgTaken = battle.isBossStage ? 30 : 20;
+                    battle.playerHp = Math.max(0, battle.playerHp - dmgTaken);
+                    Sound.wrong();
+                    const frame = document.getElementById('app-frame');
+                    frame.classList.remove('screen-shake');
+                    void frame.offsetWidth;
+                    frame.classList.add('screen-shake');
+                    spawnDamagePopup(`💔 -${dmgTaken} HP`, 'text-rose-400');
+                }
+
+                updateBattleHUD();
+                saveState();
+                setTimeout(() => openExplainModal(false, qObj.exp, ''), 550);
+            }
+        }
+
+        function startBossKeywordFinisher(qObj) {
+            const chObj = CHAPTERS.find(c => c.id === battle.mode);
+            if (!chObj || !chObj.bossFinisher) {
+                openExplainModal(true, qObj.exp, '👑 최종 보스 완벽 격파!');
+                return;
+            }
+            battle.bossPhase2 = true;
+            battle.kwSelected = [];
+            updateBattleHUD();
+
+            document.getElementById('choices-box').classList.add('hidden');
+            document.getElementById('boss-keyword-box').classList.remove('hidden');
+            document.getElementById('smart-timer-badge').textContent = '👑 보스 막타';
+
+            const bf = chObj.bossFinisher;
+            const allWords = [...bf.blanks, ...bf.distractors].sort(() => Math.random() - 0.5);
+
+            renderBossKeywordUI(bf, allWords, qObj);
+        }
+
+        function renderBossKeywordUI(bf, allWords, qObj) {
+            const b1 = battle.kwSelected[0] ? `<span class="text-emerald-500 underline font-black">[ ${battle.kwSelected[0]} ]</span>` : `<span class="text-amber-500 font-black">[ ① 빈칸 ]</span>`;
+            const b2 = battle.kwSelected[1] ? `<span class="text-emerald-500 underline font-black">[ ${battle.kwSelected[1]} ]</span>` : `<span class="text-amber-500 font-black">[ ② 빈칸 ]</span>`;
+            const formatted = bf.sentence.replace('[ ① ]', b1).replace('[ ② ]', b2);
+            document.getElementById('kw-sentence').innerHTML = formatted;
+
+            document.getElementById('kw-chips').innerHTML = allWords.map(w => {
+                const used = battle.kwSelected.includes(w);
+                return `
+                    <button onclick="selectBossKeyword('${w}')" ${used ? 'disabled' : ''} class="choice-btn py-2.5 px-3 rounded-xl text-xs font-extrabold text-center ${used ? 'opacity-30' : ''}">
+                        ${w}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function selectBossKeyword(word) {
+            const chObj = CHAPTERS.find(c => c.id === battle.mode);
+            const bf = chObj.bossFinisher;
+            battle.kwSelected.push(word);
+            Sound.click();
+
+            const allWords = Array.from(document.querySelectorAll('#kw-chips button')).map(b => b.textContent.trim());
+            const qObj = QUESTIONS.find(q => q.id === battle.queue[battle.index]);
+            renderBossKeywordUI(bf, allWords, qObj);
+
+            if (battle.kwSelected.length === 2) {
+                const isPerfect = battle.kwSelected[0] === bf.blanks[0] && battle.kwSelected[1] === bf.blanks[1];
+                if (isPerfect) {
+                    battle.earnedGold += 100;
+                    battle.earnedGem += 5;
+                    state.gold += 100;
+                    state.gem += 5;
+                    gainTierXp(30);
+                    Sound.bossLoot();
+                    saveState();
+                    setTimeout(() => {
+                        openExplainModal(true, qObj.exp, '🌟 보스 핵심 원리 조합 퍼펙트! (+100G · +5💎 · +30 XP)');
+                    }, 350);
+                } else {
+                    Sound.wrong();
+                    showToast('원리 순서가 맞지 않습니다! 다시 조합해 보세요.');
+                    battle.kwSelected = [];
+                    setTimeout(() => renderBossKeywordUI(bf, allWords, qObj), 400);
+                }
+            }
+        }
+
+        function openExplainModal(isCorrect, expText, bonusText) {
+            const badge = document.getElementById('exp-badge');
+            badge.textContent = isCorrect ? '⭕ 정답입니다!' : '❌ 오답입니다! (오답노트에 자동 등록됨)';
+            badge.className = isCorrect
+                ? 'inline-block text-xs font-black px-3 py-1 rounded-full mb-2 bg-emerald-500/20 text-emerald-500 border border-emerald-500/40'
+                : 'inline-block text-xs font-black px-3 py-1 rounded-full mb-2 bg-rose-500/20 text-rose-500 border border-rose-500/40';
+
+            const bonusEl = document.getElementById('exp-bonus-line');
+            if (bonusText) {
+                bonusEl.textContent = bonusText;
+                bonusEl.classList.remove('hidden');
+            } else {
+                bonusEl.classList.add('hidden');
+            }
+
+            document.getElementById('exp-text').textContent = expText;
+            document.getElementById('modal-explain').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            Sound.click();
+            document.getElementById('modal-explain').classList.add('hidden');
+
+            if (battle.playerHp <= 0) {
+                state.activeRun = null;
+                saveState();
+                showResultModal(false);
+                return;
+            }
+
+            battle.index++;
+            if (battle.index >= battle.queue.length) {
+                if (battle.mode !== 'REVENGE' && !state.clearedChapters.includes(battle.mode)) {
+                    state.clearedChapters.push(battle.mode);
+                }
+                state.activeRun = null;
+                saveState();
+                showResultModal(true);
+                return;
+            }
+
+            if (battle.mode !== 'REVENGE' && (battle.index === 3 || battle.index === 6)) {
+                openRelicDraftModal();
+            } else {
+                loadStage(false);
+            }
+        }
+
+        function openRelicDraftModal() {
+            const available = RELICS.filter(r => !battle.relics.includes(r.id));
+            const pool = (available.length >= 3 ? available : RELICS).sort(() => Math.random() - 0.5).slice(0, 3);
+
+            document.getElementById('relic-choices').innerHTML = pool.map(r => `
+                <button onclick="selectRelic('${r.id}')" class="choice-btn w-full p-3 rounded-2xl flex items-center gap-3 text-left">
+                    <div class="w-11 h-11 rounded-xl bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-2xl shrink-0">${r.icon}</div>
+                    <div>
+                        <div class="text-xs font-black text-amber-500">${r.name}</div>
+                        <div class="text-[11px] text-main mt-0.5">${r.desc}</div>
+                    </div>
+                </button>
+            `).join('');
+
+            document.getElementById('modal-relic').classList.remove('hidden');
+        }
+
+        function selectRelic(relicId) {
+            Sound.levelup();
+            battle.relics.push(relicId);
+            if (relicId === 'newton') {
+                battle.shieldBuff = true;
+            }
+            document.getElementById('modal-relic').classList.add('hidden');
+            const rObj = RELICS.find(r => r.id === relicId);
+            showToast(`✨ [${rObj.name}] 유물 장착 완료!`);
+            loadStage(false);
+        }
+
+        function showResultModal(isVictory) {
+            stopSmartTimer();
+            Sound.levelup();
+            document.getElementById('res-icon').textContent = isVictory ? '🏆' : '💫';
+            document.getElementById('res-title').textContent = isVictory ? '챕터 클리어!' : '멘탈 체력 소진...';
+            document.getElementById('res-desc').textContent = isVictory
+                ? '모든 스테이지를 돌파하고 보스 보상을 획득했습니다!'
+                : '연구소에서 스탯을 강화하거나 오답 노트를 복습해 보세요.';
+
+            document.getElementById('res-correct').textContent = `${battle.correctCount} / ${battle.queue.length}`;
+            document.getElementById('res-gold').textContent = `+${battle.earnedGold} G`;
+            document.getElementById('res-gem').textContent = `+${battle.earnedGem} 💎`;
+            document.getElementById('res-xp').textContent = `+${battle.earnedXp} XP`;
+            document.getElementById('modal-result').classList.remove('hidden');
+        }
+
+        function closeResultToLobby() {
+            Sound.click();
+            document.getElementById('modal-result').classList.add('hidden');
+            document.getElementById('screen-battle').classList.add('hidden');
+            document.getElementById('screen-lobby').classList.remove('hidden');
+            updateLobbyUI();
+        }
+
+        /* ==========================================================================
+           [13] 투명 오버레이 연습장 + 풀이 스냅샷 저장
+           ========================================================================== */
+        const sp = {
+            canvas: null,
+            ctx: null,
+            drawing: false,
+            color: '#fde047',
+            size: 3.5,
+            isEraser: false,
+            hasStrokes: false,
+            lastX: 0,
+            lastY: 0
+        };
+
+        function initScratchpad() {
+            sp.canvas = document.getElementById('scratchpad-canvas');
+            sp.ctx = sp.canvas.getContext('2d');
+
+            const getPos = (e) => {
+                const rect = sp.canvas.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                return { x: clientX - rect.left, y: clientY - rect.top };
+            };
+
+            const startDraw = (e) => {
+                if (e.cancelable) e.preventDefault();
+                sp.drawing = true;
+                const pos = getPos(e);
+                sp.lastX = pos.x;
+                sp.lastY = pos.y;
+                sp.ctx.beginPath();
+                sp.ctx.moveTo(pos.x, pos.y);
+            };
+
+            const moveDraw = (e) => {
+                if (!sp.drawing) return;
+                if (e.cancelable) e.preventDefault();
+                const pos = getPos(e);
+                sp.ctx.lineCap = 'round';
+                sp.ctx.lineJoin = 'round';
+                if (sp.isEraser) {
+                    sp.ctx.globalCompositeOperation = 'destination-out';
+                    sp.ctx.lineWidth = 24;
+                } else {
+                    sp.ctx.globalCompositeOperation = 'source-over';
+                    sp.ctx.strokeStyle = sp.color;
+                    sp.ctx.lineWidth = sp.size;
+                }
+                sp.ctx.lineTo(pos.x, pos.y);
+                sp.ctx.stroke();
+                sp.lastX = pos.x;
+                sp.lastY = pos.y;
+                if (!sp.isEraser) sp.hasStrokes = true;
+            };
+
+            const endDraw = () => {
+                sp.drawing = false;
+                sp.ctx.closePath();
+                sp.ctx.globalCompositeOperation = 'source-over';
+            };
+
+            sp.canvas.addEventListener('mousedown', startDraw);
+            sp.canvas.addEventListener('mousemove', moveDraw);
+            window.addEventListener('mouseup', endDraw);
+            sp.canvas.addEventListener('touchstart', startDraw, { passive: false });
+            sp.canvas.addEventListener('touchmove', moveDraw, { passive: false });
+            sp.canvas.addEventListener('touchend', endDraw);
+        }
+
+        function resizeScratchpadCanvas() {
+            if (!sp.canvas) return;
+            const container = document.getElementById('sp-canvas-container');
+            const rect = container.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            const temp = document.createElement('canvas');
+            temp.width = sp.canvas.width;
+            temp.height = sp.canvas.height;
+            if (temp.width > 0 && temp.height > 0) temp.getContext('2d').drawImage(sp.canvas, 0, 0);
+
+            sp.canvas.width = rect.width * dpr;
+            sp.canvas.height = rect.height * dpr;
+            sp.ctx.scale(dpr, dpr);
+            if (temp.width > 0 && temp.height > 0) {
+                sp.ctx.drawImage(temp, 0, 0, temp.width / dpr, temp.height / dpr);
+            }
+        }
+
+        function openScratchpad() {
+            Sound.click();
+            document.getElementById('sp-question-mirror').textContent = document.getElementById('q-text').textContent;
+            document.getElementById('scratchpad-overlay').classList.remove('hidden');
+            requestAnimationFrame(() => resizeScratchpadCanvas());
+        }
+
+        function closeScratchpad(keepIndicator) {
+            Sound.click();
+            document.getElementById('scratchpad-overlay').classList.add('hidden');
+            document.getElementById('sp-dot').classList.toggle('hidden', !(keepIndicator && sp.hasStrokes));
+        }
+
+        function saveScratchpadSnapshot() {
+            if (!sp.hasStrokes) return showToast('먼저 연습장에 풀이 과정을 적어주세요!');
+            const qId = battle.queue[battle.index];
+            const qObj = QUESTIONS.find(q => q.id === qId);
+
+            const exportCanvas = document.createElement('canvas');
+            exportCanvas.width = sp.canvas.width;
+            exportCanvas.height = sp.canvas.height;
+            const eCtx = exportCanvas.getContext('2d');
+            eCtx.fillStyle = state.settings.theme === 'light' ? '#f8fafc' : '#0b1120';
+            eCtx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+            eCtx.drawImage(sp.canvas, 0, 0);
+
+            const dataUrl = exportCanvas.toDataURL('image/png', 0.7);
+            state.savedNotes.unshift({
+                tag: qObj.tag,
+                q: qObj.q,
+                date: getTodayStr(),
+                img: dataUrl
+            });
+            if (state.savedNotes.length > 15) state.savedNotes.pop();
+            saveState();
+            Sound.levelup();
+            showToast('📸 풀이가 [오답/노트 → 비밀 풀이노트]에 저장되었습니다!');
+        }
+
+        function setPenColor(hex, btnEl) {
+            Sound.click();
+            sp.isEraser = false;
+            sp.color = hex;
+            document.getElementById('btn-pen-eraser').classList.remove('border-amber-400', 'text-amber-500');
+            document.querySelectorAll('.pen-color-btn').forEach(b => b.classList.remove('ring-2', 'ring-indigo-400', 'scale-110'));
+            btnEl.classList.add('ring-2', 'ring-indigo-400', 'scale-110');
+        }
+
+        function togglePenSize() {
+            Sound.click();
+            sp.isEraser = false;
+            sp.size = sp.size === 3.5 ? 7 : 3.5;
+            document.getElementById('btn-pen-size').textContent = sp.size === 3.5 ? '굵기: 보통' : '굵기: 굵게';
+        }
+
+        function togglePenEraser() {
+            Sound.click();
+            sp.isEraser = !sp.isEraser;
+            const btn = document.getElementById('btn-pen-eraser');
+            btn.classList.toggle('border-amber-400', sp.isEraser);
+            btn.classList.toggle('text-amber-500', sp.isEraser);
+        }
+
+        function clearScratchpad(playAudio) {
+            if (playAudio) Sound.click();
+            sp.hasStrokes = false;
+            document.getElementById('sp-dot').classList.add('hidden');
+            if (sp.canvas && sp.ctx) {
+                const dpr = window.devicePixelRatio || 1;
+                sp.ctx.clearRect(0, 0, sp.canvas.width / dpr, sp.canvas.height / dpr);
+            }
+        }
+
+        /* ==========================================================================
+           [14] 앱 초기 실행 (Init)
+           ========================================================================== */
+        window.onload = function () {
+            initScratchpad();
+            requestPersistentStorage();
+            loadAccountsRegistry();
+
+            const activeId = localStorage.getItem(ACTIVE_USER_KEY);
+            const activeAcc = accountsList.find(a => a.id === activeId);
+            if (activeAcc) {
+                enterLobbyWithAccount(activeAcc);
+            } else {
+                openAuthScreen();
+            }
+
+            window.addEventListener('resize', () => {
+                if (!document.getElementById('scratchpad-overlay').classList.contains('hidden')) {
+                    resizeScratchpadCanvas();
+                }
+            });
+        };
+    </script>
+</body>
+</html>
